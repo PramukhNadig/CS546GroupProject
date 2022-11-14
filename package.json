@@ -1,0 +1,19 @@
+{
+  "name": "musicify",
+  "version": "1.0.0",
+  "description": "Centrally located music database",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PramukhNadig/CS546GroupProject.git"
+  },
+  "author": "Amit Bhatnagar, Justin O'Boyle, Matthew Shtrahman, Max Zaremba, Pramukh Nadig",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PramukhNadig/CS546GroupProject/issues"
+  },
+  "homepage": "https://github.com/PramukhNadig/CS546GroupProject#readme"
+}
