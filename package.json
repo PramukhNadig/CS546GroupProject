@@ -4,7 +4,7 @@
   "description": "Centrally located music database",
   "main": "app.js",
   "scripts": {
-    "test": "node test.js",
+    "test": "node tests.js",
     "start": "node app.js"
   },
   "repository": {
