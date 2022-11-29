@@ -3,6 +3,7 @@ const app = express();
 const session = require("express-session");
 const configRoutes = require("./routes");
 const port = process.env.PORT || 3000;
+const path = require("path")
 const AUTH_SECRET = process.env.AUTH_SECRET || "SomeSecret";
 
 const { engine } = require("express-handlebars");
@@ -13,6 +14,9 @@ app.use(express.urlencoded({ extended: true }));
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", "./views");
+
+// public public/css folder at /public
+app.use("/public", express.static(path.join(__dirname, 'public')));
 
 app.use(
   session({

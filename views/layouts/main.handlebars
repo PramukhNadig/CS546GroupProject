@@ -6,9 +6,37 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>{{ title }}| Musicify</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/public/css/main.css">
 </head>
 
 <body>
+    <!-- navbar -->
+    <header>
+        <div class="header-bar">
+            <!-- wordmark on left, search bar in middle, login/signup on right -->
+            <div class="header-bar__left">
+                <a href="/" class="header-bar__logo">
+                    <img src="/public/img/logo.png" alt="Musicify logo">
+                </a>
+            </div>
+            <div class="header-bar__middle">
+                <form action="/search" method="GET" class="search-form">
+                    <input type="text" name="q" placeholder="Search for artists, songs, or albums"
+                        class="search-form__input">
+                    <button type="submit" class="search-form__button">
+                        <img src="/public/img/search-icon.png" alt="Search icon">
+                    </button>
+                </form>
+            </div>
+            <div class="header-bar__right">
+                {{#if user}}
+                <a href="/auth/logout" class="header-bar__link">Logout</a>
+                {{else}}
+                <a href="/auth/login" class="header-bar__link">Login</a>
+                {{/if}}
+            </div>
+        </div>
+    </header>
     <main>
         {{{body}}}
     </main>
