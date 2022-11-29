@@ -17,7 +17,7 @@ app.set("views", "./views");
 app.use(
   session({
     name: "AuthCookie",
-    secret: "secret string for lab 10",
+    secret: AUTH_SECRET,
     resave: false,
     saveUninitialized: true,
   })
