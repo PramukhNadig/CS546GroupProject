@@ -32,7 +32,7 @@ const createSong = async (album, title, artist, songLength, releaseYear, genres,
     if (insertInfo.insertedCount === 0) throw 'Could not add song';
 
     const newId = insertInfo.insertedId;
-    const song = await this.getSongById(newId);
+    const song = await getSongById(newId);
     return song;
 };
 
@@ -102,3 +102,13 @@ const getSongsWithMinAvgReview = async (avgReview) => {
 
     return songs;
 }
+
+module.exports = {
+    createSong,
+    getAllSongs,
+    getSongById,
+    getSongsByArtist,
+    getSongsByGenre,
+    getSongsByTitle,
+    getSongsWithMinAvgReview
+};

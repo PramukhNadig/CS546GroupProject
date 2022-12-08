@@ -6,10 +6,14 @@ const port = process.env.PORT || 3000;
 const path = require("path")
 const AUTH_SECRET = process.env.AUTH_SECRET || "SomeSecret";
 
-const { engine } = require("express-handlebars");
+const {
+    engine
+} = require("express-handlebars");
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({
+    extended: true
+}));
 
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
@@ -19,22 +23,22 @@ app.set("views", "./views");
 app.use("/public", express.static(path.join(__dirname, 'public')));
 
 app.use(
-  session({
-    name: "AuthCookie",
-    secret: AUTH_SECRET,
-    resave: false,
-    saveUninitialized: true,
-  })
+    session({
+        name: "AuthCookie",
+        secret: AUTH_SECRET,
+        resave: false,
+        saveUninitialized: true,
+    })
 );
 
 app.use((req, res, next) => {
-  console.log(
-    `[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (${
+    console.log(
+        `[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (${
       // @ts-ignore
       req.session?.user ? "Authenticated User" : "Non-Authenticated User"
     })`
-  );
-  next();
+    );
+    next();
 });
 
 configRoutes(app);
