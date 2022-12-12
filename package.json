@@ -4,6 +4,7 @@
   "description": "Centrally located music database",
   "main": "app.js",
   "scripts": {
+    "seed": "node ./tasks/seed.js",
     "test": "node tests.js",
     "start": "node app.js"
   },
