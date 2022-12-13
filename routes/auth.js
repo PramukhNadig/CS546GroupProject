@@ -56,28 +56,37 @@ router
     }
   });
 
-router.route("/login").post(async (req, res) => {
-  try {
-    // get username and password from body
-    const { usernameInput, passwordInput } = req.body;
-    // validate username and password
-    // if not exist throw UserError
+router
+  .route("/login")
+  .get(async (req, res) => {
+    // @ts-ignore
+    if (req.session?.user) {
+      return res.redirect("/");
+    }
+    return res.render("userLogin", { title: "Login user" });
+  })
+  .post(async (req, res) => {
+    try {
+      // get username and password from body
+      const { usernameInput, passwordInput } = req.body;
+      // validate username and password
+      // if not exist throw UserError
 
-    if (!usernameInput || !passwordInput)
-      throw new UserError("Username and password must be provided");
+      if (!usernameInput || !passwordInput)
+        throw new UserError("Username and password must be provided");
 
-    const resp = await users.checkUser(usernameInput, passwordInput);
+      const resp = await users.checkUser(usernameInput, passwordInput);
 
-    if (!resp?.authenticatedUser)
-      throw new UserError("Either the username or password is invalid");
-    // @ts-ignore - hack to ignore
-    req.session.user = { username: usernameInput.toLowerCase() };
+      if (!resp?.authenticatedUser)
+        throw new UserError("Either the username or password is invalid");
+      // @ts-ignore - hack to ignore
+      req.session.user = { username: usernameInput.toLowerCase() };
 
-    res.redirect("/");
-  } catch (e) {
-    return handleError(e, res);
-  }
-});
+      res.redirect("/");
+    } catch (e) {
+      return handleError(e, res);
+    }
+  });
 
 router.route("/logout").get(async (req, res) => {
   // @ts-ignore

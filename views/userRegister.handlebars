@@ -12,7 +12,9 @@ You will also have a link on this page that links to '/' and has the text "Alrea
 
 --}}
 <section>
-    <form method="POST" action="/register" id="registration-form">
+    <h1>Register</h1>
+    <p>Don't have an account yet? Sign up below.</p>
+    <form method="POST" action="/auth/register" id="registration-form">
         <label for="usernameInput" id="usernameLabel">Username:</label>
         <input type="text" id="usernameInput" name="usernameInput">
         <label for="passwordInput" id="passwordLabel">Password:</label>
@@ -24,5 +26,5 @@ You will also have a link on this page that links to '/' and has the text "Alrea
             <p>{{errorMsg}}</p>
         </div>
     {{/if}}
-    <a href="/">Already have an account? Click here to log-in</a>
+    <a href="/auth/login">Already have an account? Click here to log-in</a>
 </section>

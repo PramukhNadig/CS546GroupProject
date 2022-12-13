@@ -12,7 +12,9 @@ You should have a label for both the username and password inputs referencing th
 
 --}}
 <section>
-    <form method="POST" action="/login" id="login-form">
+    <h1>Log In</h1>
+    <p>Welcome</p>
+    <form method="POST" action="/auth/login" id="login-form">
         <label for="usernameInput" id="usernameLabel">Username:</label>
         <input type="text" id="usernameInput" name="usernameInput">
         <label for="passwordInput" id="passwordLabel">Password:</label>
@@ -24,5 +26,5 @@ You should have a label for both the username and password inputs referencing th
             <p>{{errorMsg}}</p>
         </div>
     {{/if}}
-    <a href="/register">Click here to register!</a>
+    <a href="/auth/register">Click here to register!</a>
 </section>
