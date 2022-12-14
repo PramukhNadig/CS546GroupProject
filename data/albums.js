@@ -17,7 +17,9 @@ const {
     songs: array[ObjectId]
 */
 
-const createAlbum = async (title, artist, albumLength, releaseYear, genre, songs) => {
+let exportedMethods = {
+
+async createAlbum (title, artist, albumLength, releaseYear, genre, songs) {
     if (!title || typeof title !== 'string') throw 'You must provide a title for your album';
     if (!artist || typeof artist !== 'string') throw 'You must provide an artist for your album';
     if (!albumLength || typeof albumLength !== 'string') throw 'You must provide an album length for your album';
@@ -44,17 +46,17 @@ const createAlbum = async (title, artist, albumLength, releaseYear, genre, songs
     const newId = insertInfo.insertedId;
     const album = await this.getAlbumById(newId);
     return album;
-}
+},
 
-const getAllAlbums = async () => {
+async getAllAlbums () {
     const albumCollection = await albumsDatabase();
 
     const albums = await albumCollection.find({}).toArray();
 
     return albums;
-}
+},
 
-const getAlbumById = async (id) => {
+async getAlbumById (id) {
     if (!id) throw 'You must provide an id to search for';
 
     const albumCollection = await albumsDatabase();
@@ -65,9 +67,9 @@ const getAlbumById = async (id) => {
     if (album === null) throw 'No album with that id';
 
     return album;
-}
+},
 
-const getAlbumsByArtist = async (artist) => {
+async getAlbumsByArtist (artist) {
     if (!artist || typeof artist !== 'string') throw 'You must provide an artist to search for';
 
     const albumCollection = await albumsDatabase();
@@ -76,9 +78,9 @@ const getAlbumsByArtist = async (artist) => {
     }).toArray();
 
     return albums;
-}
+},
 
-const getAlbumsByGenre = async (genre) => {
+async getAlbumsByGenre (genre) {
     if (!genre || typeof genre !== 'string') throw 'You must provide a genre to search for';
 
     const albumCollection = await albumsDatabase();
@@ -87,9 +89,9 @@ const getAlbumsByGenre = async (genre) => {
     }).toArray();
 
     return albums;
-}
+},
 
-const getAlbumsByTitle = async (title) => {
+async getAlbumsByTitle (title) {
     if (!title || typeof title !== 'string') throw 'You must provide a title to search for';
 
     const albumCollection = await albumsDatabase();
@@ -98,9 +100,9 @@ const getAlbumsByTitle = async (title) => {
     }).toArray();
 
     return albums;
-}
+},
 
-const addReviewToAlbum = async (albumId, userId, review) => {
+async addReviewToAlbum (albumId, userId, review) {
     if (!albumId) throw 'You must provide an album id';
     if (!userId) throw 'You must provide a user id';
     if (!review || typeof review !== 'string') throw 'You must provide a review';
@@ -136,9 +138,9 @@ const addReviewToAlbum = async (albumId, userId, review) => {
 
     const updatedAlbum = await this.getAlbumById(albumId);
     return updatedAlbum;
-};
+},
 
-const updateAlbum = async (id, updatedAlbum) => {
+async updateAlbum (id, updatedAlbum) {
     if (!id) throw 'You must provide an id to search for';
     if (!updatedAlbum) throw 'You must provide an album to update';
 
@@ -181,3 +183,6 @@ const updateAlbum = async (id, updatedAlbum) => {
 
     return await this.getAlbumById(id);
 }
+};
+
+module.exports = exportedMethods;
