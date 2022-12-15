@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<section>
+    {{body}}
+    <h1>Songs</h1>
+    {{#if songs}}
+        <div class="songs">
+            {{#each songs}}
+                <div class="song">
+                    <h2><a href = "song/{{_id}}">{{title}}</a></h2>
+                    <p>{{artist}}</p>
+                    <p>{{album}}</p>
+                    <p>{{genre}}</p>
+                    <p>{{releaseDate}}</p>
+                </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <div class="error">
+            <p>No songs found</p>
+        </div>
+    {{/if}}
+    <h1>Albums</h1>
+    {{#if albums}}
+        <div class="albums">
+            {{#each albums}}
+                <div class="album">
+                    <h2><a href="album/{{_id}}">{{title}}</a></h2>
+                    <p>{{artist}}</p>
+                    <p>{{genre}}</p>
+                    <p>{{releaseDate}}</p>
+                </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <div class="error">
+            <p>No albums found</p>
+        </div>
+    {{/if}}
+    <h1>Artists</h1>
+    {{#if artists}}
+        <div class="artists">
+            {{#each artists}}
+                <div class="artist">
+                    <h2>{{this}}</h2>
+                </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <div class="error">
+            <p>No artists found</p>
+        </div>
+    {{/if}}
+
+
+
+</section>
+
+</html>

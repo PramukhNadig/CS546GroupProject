@@ -4,10 +4,14 @@ const users = require("./users");
 const albums = require("./albums");
 const songs = require("./songs");
 const playlists = require("./playlist");
+const songReviews = require("./songReviews");
+const albumReviews = require("./albumReviews");
 
 module.exports = {
   users,
   albums,
   songs,
-  playlists
+  playlists,
+  songReviews,
+  albumReviews
 };

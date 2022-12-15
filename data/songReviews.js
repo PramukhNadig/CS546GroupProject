@@ -3,6 +3,7 @@ songReviews Schema
 _id: ObjectId
 title: String
 userID: ObjectId
+songID: ObjectId
 name: String
 rating: Number
 comment: String
@@ -15,27 +16,34 @@ const {
     ObjectId
 } = require('mongodb');
 
-async function createSongReview(title, userID, name, rating, comment) {
+async function createSongReview(title, userID, songID, name, rating, comment) {
     if (!title) throw "You must provide a title";
     if (!userID) throw "You must provide a user id";
+    if (!songID) throw "You must provide a song id";
     if (!name) throw "You must provide a name";
-    if (!rating) throw "You must provide a rating";
     if (!comment) throw "You must provide a comment";
 
     if (typeof title !== "string") throw "Title must be a string";
     if (typeof userID !== "string") throw "User ID must be a string";
+    if (typeof songID !== "string") throw "Song ID must be a string";
     if (typeof name !== "string") throw "Name must be a string";
     if (typeof rating !== "number") throw "Rating must be a number";
     if (typeof comment !== "string") throw "Comment must be a string";
 
-    if (rating < 1 || rating > 5) throw "Rating must be between 1 and 5 (inclusive)";
+    if (rating && (rating < 1 || rating > 5)) throw "Rating must be between 1 and 5 (inclusive)";
 
+    if (!ObjectId.isValid(userID)) throw "User ID is not valid";
+    if (!ObjectId.isValid(songID)) throw "Song ID is not valid";
+
+    const song = await songs.getSongById(songID);
+    if (!song) throw "Song does not exist";
 
     const songReviewsCollection = await songReviews();
 
     let newSongReview = {
         title: title,
         userID: ObjectId(userID),
+        songID: ObjectId(songID),
         name: name,
         rating: rating,
         comment: comment
@@ -110,6 +118,10 @@ async function updateSongReview(id, updatedSongReview) {
         updatedSongReviewData.userID = updatedSongReview.userID;
     }
 
+    if (updatedSongReview.songID) {
+        updatedSongReviewData.songID = updatedSongReview.songID;
+    }
+
     if (updatedSongReview.name) {
         updatedSongReviewData.name = updatedSongReview.name;
     }
@@ -145,6 +157,18 @@ async function deleteSongReview(id) {
     }
 }
 
+async function getSongReviewBySongId(songId) {
+    if (!songId) throw "You must provide a song id to search for";
+
+    const songReviewsCollection = await songReviews();
+    const songReview = await songReviewsCollection.find({
+        songID: ObjectId(songId)
+    }).toArray();
+    if (songReview === null) throw "Song has no song reviews";
+
+    return songReview;
+}
+
 module.exports = {
     createSongReview,
     getAllSongReviews,
@@ -152,5 +176,6 @@ module.exports = {
     getSongReviewByUserId,
     getSongReviewByTitle,
     updateSongReview,
-    deleteSongReview
+    deleteSongReview,
+    getSongReviewBySongId
 };

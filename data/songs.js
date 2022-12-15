@@ -103,6 +103,24 @@ const getSongsWithMinAvgReview = async (avgReview) => {
     return songs;
 }
 
+const searchSongs = async (searchTerm) => {
+    if (!searchTerm || typeof searchTerm !== 'string') throw 'You must provide a search term to search for';
+
+    const allSongs = await getAllSongs();
+    const filteredSongs = allSongs.filter(song => song.title.includes(searchTerm));
+
+    return filteredSongs;
+}
+
+const searchArtists = async (searchTerm) => {
+    if (!searchTerm || typeof searchTerm !== 'string') throw 'You must provide a search term to search for';
+
+    const allSongs = await getAllSongs();
+    const filteredSongs = allSongs.filter(song => song.artist.includes(searchTerm));
+
+    const uniqueArtists = [...new Set(filteredSongs.map(song => song.artist))];
+    return uniqueArtists;
+}
 module.exports = {
     createSong,
     getAllSongs,
@@ -110,5 +128,7 @@ module.exports = {
     getSongsByArtist,
     getSongsByGenre,
     getSongsByTitle,
-    getSongsWithMinAvgReview
+    getSongsWithMinAvgReview,
+    searchSongs,
+    searchArtists
 };
