@@ -107,7 +107,7 @@ const searchSongs = async (searchTerm) => {
     if (!searchTerm || typeof searchTerm !== 'string') throw 'You must provide a search term to search for';
 
     const allSongs = await getAllSongs();
-    const filteredSongs = allSongs.filter(song => song.title.includes(searchTerm));
+    const filteredSongs = allSongs.filter(song => song.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
     return filteredSongs;
 }
@@ -116,7 +116,7 @@ const searchArtists = async (searchTerm) => {
     if (!searchTerm || typeof searchTerm !== 'string') throw 'You must provide a search term to search for';
 
     const allSongs = await getAllSongs();
-    const filteredSongs = allSongs.filter(song => song.artist.includes(searchTerm));
+    const filteredSongs = allSongs.filter(song => song.artist.toLowerCase().includes(searchTerm.toLowerCase()));
 
     const uniqueArtists = [...new Set(filteredSongs.map(song => song.artist))];
     return uniqueArtists;
