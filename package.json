@@ -6,7 +6,8 @@
   "scripts": {
     "seed": "node ./tasks/seed.js",
     "test": "node tests.js",
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -25,5 +26,8 @@
     "express-session": "^1.17.3",
     "mongodb": "^4.12.1",
     "package.json": "^2.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   }
 }
