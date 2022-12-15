@@ -1,0 +1,45 @@
+<section>
+    {{{body}}}
+    {{#if error}}
+        <div class="error">
+            <p>{{errorMsg}}</p>
+        </div>
+    {{/if}}
+    {{#if song}}
+        <div class="song">
+            <h2>{{song.title}}</h2>
+            <p>{{song.artist}}</p>
+            <p>{{song.album}}</p>
+            <p>{{song.genre}}</p>
+            <p>{{song.releaseDate}}</p>
+        </div>
+        {{#if songReviews}}
+            <h1>Reviews</h1>
+            <div class="reviews">
+                {{#each songReviews}}
+                    <div class="review">
+                        <!-- put the name on the top left, the title below the name and the rating on the right of the comment-->
+                        <h2>{{name}}</h2>
+                        <p>{{title}}</p>
+                        <p>{{rating}}</p>
+                        <p>{{comment}}</p>
+                    </div>
+                {{/each}}
+            </div>
+        {{/if}}
+    {{/if}}
+    {{#if songs}}
+        <div class="songs">
+            {{#each songs}}
+                <div class="song">
+                    <h2>{{title}}</h2>
+                    <p>{{artist}}</p>
+                    <p>{{album}}</p>
+                    <p>{{genre}}</p>
+                    <p>{{releaseDate}}</p>
+                </div>
+            {{/each}}
+        </div>
+    {{/if}}
+        
+</section>

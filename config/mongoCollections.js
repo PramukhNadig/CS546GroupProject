@@ -19,4 +19,8 @@ module.exports = {
   users: getCollectionFn("users"),
   songs: getCollectionFn("songs"),
   playlists: getCollectionFn("playlists"),
+  albums: getCollectionFn("albums"),
+  songReviews: getCollectionFn("songReviews"),
+  albumReviews: getCollectionFn("albumReviews"),
+
 };
