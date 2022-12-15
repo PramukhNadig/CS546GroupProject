@@ -190,7 +190,7 @@ let exportedMethods = {
 
         const als = await this.getAllAlbums();
         const searchedAlbums = als.filter(album => {
-            return album.title.includes(searchTerm)
+            return album.title.toLowerCase().includes(searchTerm.toLowerCase())
         });
 
         return searchedAlbums;

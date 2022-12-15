@@ -253,8 +253,8 @@ async function main() {
         1971,
         "Psychedelic",
         [dontGoNearTheWater._id, longPromisedRoad._id, takeALoadOffYourFeet._id,
-            disneyGirls._id, studentDemonstrationTime._id, feelFlows._id,
-            lookinAtTomorrow._id, aDayInTheLifeOfATree._id, tilIDie._id, surfs_Up._id
+        disneyGirls._id, studentDemonstrationTime._id, feelFlows._id,
+        lookinAtTomorrow._id, aDayInTheLifeOfATree._id, tilIDie._id, surfs_Up._id
         ]);
 
     const bookOfRules = await albums.createAlbum(
@@ -264,8 +264,8 @@ async function main() {
         1973,
         "Roots Reggae",
         [bookOf_Rules._id, blackOnBlack._id, peaceAndHarmony._id,
-            doGoodToEveryone._id, world._id, sufferingSo._id, autalene._id,
-            bagaBoo._id, wahGoHome._id, overAndOver._id
+        doGoodToEveryone._id, world._id, sufferingSo._id, autalene._id,
+        bagaBoo._id, wahGoHome._id, overAndOver._id
         ]);
 
     const computerWorld = await albums.createAlbum(
@@ -275,7 +275,7 @@ async function main() {
         1981,
         "Electronic",
         [computer_World._id, pocketCalculator._id, numbers._id,
-            computerWorld2._id, homeComputer._id, itsMoreFunToCompute._id
+        computerWorld2._id, homeComputer._id, itsMoreFunToCompute._id
         ]);
 
     console.log('Done seeding database');
