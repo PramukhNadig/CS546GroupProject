@@ -278,7 +278,6 @@ async function main() {
             computerWorld2._id, homeComputer._id, itsMoreFunToCompute._id
         ]);
 
-    const longPromisedRoadReview = await reviews.createSongReview("good song", "637c38dcae22b9ee60f111c4", longPromisedRoad._id + "", "user1", 4.0, "good song!!!");
     console.log('Done seeding database');
 
     await dbConnection.closeConnection();
