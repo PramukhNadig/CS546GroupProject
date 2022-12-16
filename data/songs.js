@@ -1,9 +1,7 @@
 const mongodb = require('mongodb');
 const songsDatabase = require('../config/mongoCollections').songs;
-
-const {
-    ObjectId
-} = require('mongodb');
+const songReviews = require("./songReviews")
+const {ObjectId} = require('mongodb');
 
 const createSong = async (album, title, artist, songLength, releaseYear, genres, lyrics) => {
     if (!album || typeof album !== 'string') throw 'You must provide an album name for your song';
@@ -112,6 +110,27 @@ const searchSongs = async (searchTerm) => {
     return filteredSongs;
 }
 
+const addReviewToSong = async (songId, reviewId) => {
+    if (!songId || typeof songId !== 'string') throw 'You must provide a song id to add a review to';
+    if (!reviewId || typeof reviewId !== 'string') throw 'You must provide a review id to add to a song';
+
+    const songCollection = await songsDatabase();
+    const parsedSongId = ObjectId(songId);
+    const parsedReviewId = ObjectId(reviewId);
+
+    const updatedInfo = await songCollection.updateOne({
+        _id: parsedSongId
+    }, {
+        $push: {
+            reviews: parsedReviewId
+        }
+    });
+
+    if (updatedInfo.modifiedCount === 0) throw 'Could not add review to song';
+
+    return await getSongById(songId);
+};
+
 const searchArtists = async (searchTerm) => {
     if (!searchTerm || typeof searchTerm !== 'string') throw 'You must provide a search term to search for';
 
@@ -130,5 +149,6 @@ module.exports = {
     getSongsByTitle,
     getSongsWithMinAvgReview,
     searchSongs,
-    searchArtists
+    searchArtists,
+    addReviewToSong
 };

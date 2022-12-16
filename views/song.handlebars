@@ -1,9 +1,5 @@
 <section>
     {{{body}}}
-    <div hidden>
-        <div id="songId">{{song.id}}</div>
-        <div id="userId">{{user.id}}</div>
-    </div>
     <div class="song-details">
         <h2>{{song.title}}</h2>
         <p>Artist:     {{song.artist}}</p>
@@ -16,8 +12,9 @@
     <div id="addReview">
         <h2>Add Review</h2>
         <div id="addReviewDetails">
-            <form id="newReview">
-                <label type="text" id="newReviewUsernameTitle">Username: <span id="newReviewUsername">{{user.username}}</span></label><br>
+            <form method="POST" action="/song/{{song.id}}" id="newReview">
+                <label for="newReviewUsernameInput" id="newReviewUsernameTitle">Username:</label>
+                <input type="text" id="newReviewUsernameInput" name="newReviewUsernameInput" value="{{user.username}}" readonly> <br>
 
                 <label for="newReviewTitleInput" id="newReviewTitleLabel">Title:</label>
                 <input type="text" id="newReviewTitleInput" name="newReviewTitleInput"> <br>
@@ -33,8 +30,6 @@
         </div>
         <div id="error" class="error" hidden>Error:</div>
     </div>
-
-    <script type="module" src="/public/js/addSongReview.js"></script>
 
     <h1>Reviews</h1>
     {{#if hasSongReviews}}
