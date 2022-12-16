@@ -1,47 +1,96 @@
 <div class="container py-4">
     {{{body}}}
-    <div class="song-details">
-        <h2>{{song.title}}</h2>
-        <p>Artist:     {{song.artist}}</p>
-        <p>Album Name: {{song.album}}</p>
-        <p>Genre(s):   {{song.genre}}</p>
-        <p>Released:   {{song.releaseDate}}</p>
-        <p>Lyrics:     {{song.lyrics}}</p>
-    </div>
-
-    <div id="addReview">
-        <h2>Add Review</h2>
-        <div id="addReviewDetails">
-            <form method="POST" action="/song/{{song.id}}" id="newReview">
-                <label for="newReviewTitleInput" id="newReviewTitleLabel">Title:</label>
-                <input type="text" id="newReviewTitleInput" name="newReviewTitleInput"> <br>
-
-                <label for="newReviewRatingInput" id="newReviewRatingLabel">Rating (Optional):</label>
-                <input type="number" id="newReviewRatingInput" name="newReviewRatingInput" min=1 max=5> <br>
-
-                <label for="newReviewCommentInput" id="newReviewCommentLabel">Comment:</label>
-                <input type="text" id="newReviewCommentInput" name="newReviewCommentInput"> <br>
-
-                <button type="submit">Create Review</button>
-            </form>
-        </div>
-        <div id="error" class="error" hidden>Error:</div>
-    </div>
-
-    <h1>Reviews</h1>
-    {{#if hasSongReviews}}
-        <div class="reviews">
-            {{#each songReviews}}
-                <div class="review">
-                    <!-- put the name on the top left, the title below the name and the rating on the right of the comment-->
-                    <h2>{{name}}</h2>
-                    <p>{{title}}</p>
-                    <p>{{rating}}</p>
-                    <p>{{comment}}</p>
-                </div>
+    <h1>{{song.title}}</h2>
+        <div class="mb-3 playlist-section">
+            {{#each playlists}}
+            <a href="/playlists/{{_id}}"><span class="badge bg-dark">{{PlaylistName}}</span></a>
             {{/each}}
+
+            <a data-bs-target="#addToPlaylists" data-bs-toggle="modal" href="#"><span
+                    class="badge bg-light text-dark">+</span></a>
         </div>
-    {{else}}
-        <p>None</p>
-    {{/if}}
+
+        <div class="song-details">
+            <p>Artist: {{song.artist}}</p>
+            <p>Album Name: {{song.album}}</p>
+            <p>Genre(s): {{song.genre}}</p>
+            <p>Released: {{song.releaseDate}}</p>
+            <p>Lyrics: {{song.lyrics}}</p>
+        </div>
+        <div class="row">
+            <div class="col">
+                {{#if hasSongReviews}}
+                <div class="accordion" id="reviews">
+                    {{#each songReviews}}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="review-{{name}}-{{rating}}">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                aria-expanded="true" aria-controls="review-{{name}}-{{rating}}">
+                                @{{name}}: {{title}} ({{rating}})
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show"
+                            aria-labelledby="#review-{{name}}-{{rating}}" data-bs-parent="#reviews">
+                            <div class="accordion-body">
+                                {{comment}}
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                    {{/if}}
+                </div>
+            </div>
+
+            <div class="col">
+                <div id="addReview">
+                    <h4>What do you think?</h4>
+                    <div id="addReviewDetails">
+                        <form method="POST" action="/song/{{song.id}}" id="newReview">
+                            <div class="mb-3">
+                                <label for="newReviewRatingInput" id="newReviewRatingLabel">Rating (Optional)</label>
+                                <input type="range" id="newReviewRatingInput" name="newReviewRatingInput" min=1 max=5>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="newReviewTitleInput"
+                                    placeholder="Review title" name="newReviewTitleInput">
+                            </div>
+                            <div class="mb-3">
+                                <textarea class="form-control" type="text" id="newReviewCommentInput"
+                                    name="newReviewCommentInput" placeholder="Your review"></textarea>
+                            </div>
+                            <button class="btn btn-primary" type="submit">Create Review</button>
+                        </form>
+                    </div>
+                    <div id="error" class="error" hidden>Error:</div>
+                </div>
+            </div>
+        </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addToPlaylists" tabindex="-1" aria-labelledby="addToPlaylistsLabel" aria-hidden="true">
+    <form method="POST" action="/song/{{song.id}}/playlists" id="newPlaylist">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addToPlaylistsLabel">Add to playlist</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{#each allUserPlaylists}}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="playlist" value={{_id}} id="playlist-{{_id}}">
+                        <label class="form-check-label" for="playlist-{{_id}}">
+                            {{PlaylistName}}
+                        </label>
+                    </div>
+                    {{/each}}
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Add to playlist</button>
+                </div>
+            </div>
+    </form>
 </div>
