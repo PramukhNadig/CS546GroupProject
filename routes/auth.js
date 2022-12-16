@@ -5,6 +5,26 @@ const { UserError } = require("../helpers/userHelper");
 
 const { users } = require("../data");
 
+const renderLogin = (req, res, error) =>
+  res.render("auth", {
+    login: true,
+    layout: false,
+    title: "Log in",
+    target: "/auth/login",
+    error,
+    user: req?.session?.user,
+  });
+
+const renderRegister = (req, res, error) =>
+  res.render("auth", {
+    login: false,
+    layout: false,
+    title: "Sign up",
+    target: "/auth/register",
+    error,
+    user: req?.session?.user,
+  });
+
 const handleError = async (error, res) => {
   if (!!error?._status) {
     return res
@@ -24,7 +44,7 @@ router.route("/").get(async (req, res) => {
     return res.redirect("/");
   }
 
-  return res.render("userLogin", { title: "Login user" });
+  return renderLogin(req, res);
 });
 
 router
@@ -34,7 +54,7 @@ router
     if (req.session?.user) {
       return res.redirect("/");
     }
-    return res.render("userRegister", { title: "Register user" });
+    return renderRegister(req, res);
   })
   .post(async (req, res) => {
     try {
@@ -52,6 +72,9 @@ router
 
       return res.redirect("/");
     } catch (e) {
+      if (e instanceof UserError) {
+        return renderRegister(req, res, e.message);
+      }
       return handleError(e, res);
     }
   });
@@ -63,7 +86,7 @@ router
     if (req.session?.user) {
       return res.redirect("/");
     }
-    return res.render("userLogin", { title: "Login user" });
+    return renderLogin(req, res);
   })
   .post(async (req, res) => {
     try {
@@ -80,15 +103,21 @@ router
       if (!resp?.authenticatedUser)
         throw new UserError("Either the username or password is invalid");
       // @ts-ignore - hack to ignore
-      const username = usernameInput.toLowerCase()
-      const userId = (await users.getUserByUsername(usernameInput))._id.toString()
-      req.session.user = { 
+      const username = usernameInput.toLowerCase();
+      const userId = (
+        await users.getUserByUsername(usernameInput)
+      )._id.toString();
+      req.session.user = {
         username: username,
-        id: userId
+        id: userId,
       };
 
       res.redirect("/");
     } catch (e) {
+      // TODO proper status
+      if (e instanceof UserError) {
+        return renderLogin(req, res, e.message);
+      }
       return handleError(e, res);
     }
   });
@@ -96,18 +125,12 @@ router
 router.route("/logout").get(async (req, res) => {
   // @ts-ignore
   if (!req.session?.user)
-    return res.render("logout", {
-      title: "Logout",
-      message: "You are already logged out, since you weren't logged in.",
-    });
+    return renderLogin(req, res, "You have been logged out.");
 
   // @ts-ignore
   req.session.destroy();
 
-  return res.render("logout", {
-    title: "Logout",
-    message: "You have been logged out.",
-  });
+  return renderLogin(req, res, "You have been logged out.");
 });
 
 module.exports = router;

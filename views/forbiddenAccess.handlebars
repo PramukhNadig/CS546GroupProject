@@ -1,12 +1,6 @@
-{{!--
-
-If the user is NOT logged in, and 'GET /protected' endpoint is called, you will render this view that displays:
--Error page saying that the user is not logged in
-
---}}
-<section>
-    {{!-- <p>We're sorry, but you're not logged in. Please log in to access this page.</p> --}}
-    <p class="error-text">Error:</p>
-    <p>{{message}}</p>
-    <a href="/auth/login">Login</a>
-</section>
+<div class="container">
+    <h1 class="mt-5">An error occured</h1>
+    <p class="lead">{{message}}</p>
+    <p>Do you want to <a href="/">go back home? &rarr;</a>
+    </p>
+</div>

@@ -6,41 +6,53 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>{{ title }} | Musicify</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/public/css/main.css">
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/public/styles/main.css">
 </head>
 
 <body>
     <!-- navbar -->
-    <header>
-        <div class="header-bar">
-            <!-- wordmark on left, search bar in middle, login/signup on right -->
-            <div class="header-bar__left">
-                <a href="/" class="header-bar__logo">
-                    <img src="/public/img/logo.png" alt="Musicify logo" id="m-logo">
-                </a>
+    <header class="p-3 text-bg-dark">
+        <nav>
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                    <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+                            <use xlink:href="#bootstrap"></use>
+                        </svg>
+                    </a>
+
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
+                        {{!-- <li><a href="#" class="nav-link px-2 text-white">Features</a></li>
+                        <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
+                        <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
+                        <li><a href="#" class="nav-link px-2 text-white">About</a></li> --}}
+                    </ul>
+
+                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="/search">
+                        <input name="query" id="query" type="search" class="form-control form-control-dark text-bg-dark"
+                            placeholder="Search..." aria-label="Search">
+                    </form>
+
+                    <div class="text-end">
+                        {{#if user}}
+                        <a type="button" href="/auth/logout" class="btn btn-warning">Log out</a>
+                        {{else}}
+                        <a type="button" href="/auth/login" class="btn btn-warning">Log in</a>
+                        {{/if}}
+
+                    </div>
+                </div>
             </div>
-            <div class="header-bar__middle">
-                <form action="/search" method="GET" class="search-form">
-                    <input type="text" name="q" placeholder="Search for artists, songs, or albums"
-                        class="search-form__input">
-                    <button type="submit" class="search-form__button">
-                        <img src="/public/img/search-icon.png" alt="Search icon">
-                    </button>
-                </form>
-            </div>
-            <div class="header-bar__right">
-                {{#if user}}
-                <a href="/auth/logout" class="header-bar__link">Logout</a>
-                {{else}}
-                <a href="/auth/register" class="header-bar__link">Register</a>
-                <a href="/auth/login" class="header-bar__link">Login</a>
-                {{/if}}
-            </div>
-        </div>
+        </nav>
     </header>
+
+
     <main>
         {{{body}}}
     </main>
+    <script src="/lib/bootstrap/dist/css/bootstrap.min.js"></script>
 </body>
 
 </html>
