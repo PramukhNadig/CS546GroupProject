@@ -11,10 +11,7 @@ comment: String
 
 const mongoCollections = require("../config/mongoCollections");
 const songReviews = mongoCollections.songReviews;
-const songs = require("./songs");
-const {
-    ObjectId
-} = require('mongodb');
+const {ObjectId} = require('mongodb');
 
 async function createSongReview(title, userID, songID, name, rating, comment) {
     if (!title) throw "You must provide a title";
@@ -27,16 +24,13 @@ async function createSongReview(title, userID, songID, name, rating, comment) {
     if (typeof userID !== "string") throw "User ID must be a string";
     if (typeof songID !== "string") throw "Song ID must be a string";
     if (typeof name !== "string") throw "Name must be a string";
-    if (typeof rating !== "number") throw "Rating must be a number";
+    if (rating && (typeof rating !== "number")) throw "Rating must be a number";
     if (typeof comment !== "string") throw "Comment must be a string";
 
     if (rating && (rating < 1 || rating > 5)) throw "Rating must be between 1 and 5 (inclusive)";
 
     if (!ObjectId.isValid(userID)) throw "User ID is not valid";
     if (!ObjectId.isValid(songID)) throw "Song ID is not valid";
-
-    const song = await songs.getSongById(songID);
-    if (!song) throw "Song does not exist";
 
     const songReviewsCollection = await songReviews();
 

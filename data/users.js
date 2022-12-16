@@ -261,6 +261,19 @@ const removeFriend = async (username, friendUsername) => {
   }
 };
 
+
+const getUserByUsername = async (username) => {
+  if (!username || typeof username !== 'string') throw 'You must provide a username to search for';
+
+  // can use findOne since username should be a unique identifier
+  const userCollection = await users();
+  const user = await userCollection.findOne({
+    username: username
+  });
+
+  return user;
+}
+
 const removeFavoriteSong = async (username, songId) => {
   if (!username || typeof username !== "string")
     throw new UserError("Username must be provided");
@@ -329,11 +342,10 @@ const removeFavoriteAlbum = async (username, albumId) => {
   }
 };
 
-
-
 module.exports = {
   createUser,
   checkUser,
+  getUserByUsername,
   makeAdmin,
   checkAdmin,
   favoriteSong,
@@ -343,3 +355,4 @@ module.exports = {
   removeFavoriteSong,
   removeFavoriteAlbum,
 };
+

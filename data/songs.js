@@ -1,9 +1,7 @@
 const mongodb = require('mongodb');
 const songsDatabase = require('../config/mongoCollections').songs;
-const usersDatabase = require('../config/mongoCollections').users;
-const {
-    ObjectId
-} = require('mongodb');
+const songReviews = require("./songReviews")
+const {ObjectId} = require('mongodb');
 
 const createSong = async (album, title, artist, songLength, releaseYear, genres, lyrics) => {
     if (!album || typeof album !== 'string') throw 'You must provide an album name for your song';
@@ -140,24 +138,7 @@ const addReviewToSong = async (songId, reviewId) => {
             reviews: parsedReviewId
         }
     });
-
-    let newAvgReview = 0;
-    const song = await getSongById(songId);
-    const reviews = song.reviews;
-    for (let i = 0; i < reviews.length; i++) {
-        const review = await getReviewById(reviews[i]);
-        newAvgReview += review.rating;
-    }
-    newAvgReview = newAvgReview / reviews.length;
-
-    const updatedInfo2 = await songCollection.updateOne({
-        _id: parsedSongId
-    }, {
-        $set: {
-            avgReview: newAvgReview
-        }
-    });
-
+    
     if (updatedInfo.modifiedCount === 0) throw 'Could not add review to song';
 
     return await getSongById(songId);

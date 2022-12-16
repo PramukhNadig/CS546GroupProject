@@ -80,7 +80,12 @@ router
       if (!resp?.authenticatedUser)
         throw new UserError("Either the username or password is invalid");
       // @ts-ignore - hack to ignore
-      req.session.user = { username: usernameInput.toLowerCase() };
+      const username = usernameInput.toLowerCase()
+      const userId = (await users.getUserByUsername(usernameInput))._id.toString()
+      req.session.user = { 
+        username: username,
+        id: userId
+      };
 
       res.redirect("/");
     } catch (e) {
