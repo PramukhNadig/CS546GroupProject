@@ -115,19 +115,12 @@ router
 
 router.route("/logout").get(async (req, res) => {
   // @ts-ignore
-  if (!req.session?.user)
-    return res.render("logout", {
-      title: "Logout",
-      message: "You are already logged out, since you weren't logged in.",
-    });
+  if (!req.session?.user) return renderLogin(res, "You have been logged out.");
 
   // @ts-ignore
   req.session.destroy();
 
-  return res.render("logout", {
-    title: "Logout",
-    message: "You have been logged out.",
-  });
+  return renderLogin(res, "You have been logged out.");
 });
 
 module.exports = router;
