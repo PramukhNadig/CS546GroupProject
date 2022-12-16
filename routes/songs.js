@@ -54,7 +54,8 @@ router
         return res.redirect(
           "/auth/login?next=" + encodeURIComponent(req.originalUrl)
         );
-      const username = req.body.newReviewUsernameInput;
+
+      const username = req.session?.user?.username;
       const title = req.body.newReviewTitleInput;
       const rating = Number(req.body.newReviewRatingInput);
       const comment = req.body.newReviewCommentInput;
