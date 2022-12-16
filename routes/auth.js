@@ -12,7 +12,7 @@ const renderLogin = (req, res, error) =>
     title: "Log in",
     target: "/auth/login",
     error,
-    user: req?.session?.user
+    user: req?.session?.user,
   });
 
 const renderRegister = (req, res, error) =>
@@ -103,12 +103,13 @@ router
       if (!resp?.authenticatedUser)
         throw new UserError("Either the username or password is invalid");
       // @ts-ignore - hack to ignore
-      const username = usernameInput.toLowerCase()
-      const userId = (await users.getUserByUsername(usernameInput))._id.toString()
-      console.log(req.session)
-      req.session.user = { 
+      const username = usernameInput.toLowerCase();
+      const userId = (
+        await users.getUserByUsername(usernameInput)
+      )._id.toString();
+      req.session.user = {
         username: username,
-        id: userId
+        id: userId,
       };
 
       res.redirect("/");
@@ -123,7 +124,8 @@ router
 
 router.route("/logout").get(async (req, res) => {
   // @ts-ignore
-  if (!req.session?.user) return renderLogin(req, res, "You have been logged out.");
+  if (!req.session?.user)
+    return renderLogin(req, res, "You have been logged out.");
 
   // @ts-ignore
   req.session.destroy();

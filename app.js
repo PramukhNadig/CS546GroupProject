@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const configRoutes = require("./routes");
+const { config } = require("./config/mongoConnection");
 const port = process.env.PORT || 3000;
 const path = require("path");
 const AUTH_SECRET = process.env.AUTH_SECRET || "SomeSecret";
@@ -34,6 +36,10 @@ app.use(
     secret: AUTH_SECRET,
     resave: false,
     saveUninitialized: true,
+    store: MongoStore.create({
+      mongoUrl: config.serverUrl,
+      dbName: config.databaseName,
+    }),
   })
 );
 
