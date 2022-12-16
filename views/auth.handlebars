@@ -27,6 +27,8 @@ label.
 </head>
 
 <body>
+    <a href="/" class="position-absolute top-0 start-0 m-3 btn btn-outline-primary">&larr; Home</a>
+
     <main class="form-signin w-100 m-auto">
         {{#if error}}
         <div class="alert alert-danger" role="alert">
@@ -49,9 +51,9 @@ label.
             </div>
 
             {{#if login}}
-                <p class="mt-3 mb-3 text-muted"><a href="/auth/register">Create an account instead</a> </p>
+            <p class="mt-3 mb-3 text-muted"><a href="/auth/register">Create an account instead</a> </p>
             {{else}}
-                <p class="mt-3 mb-3 text-muted"><a href="/auth/login">Already have an account? Log in instead</a> </p>
+            <p class="mt-3 mb-3 text-muted"><a href="/auth/login">Already have an account? Log in instead</a> </p>
             {{/if}}
 
             <button class="w-100 btn btn-lg btn-primary" type="submit">{{title}}</button>
