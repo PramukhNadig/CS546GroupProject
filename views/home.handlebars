@@ -19,21 +19,29 @@
 <div class="container py-4">
   <div class="p-5 mb-4 bg-light rounded-3">
     <div class="container-fluid py-5">
+      {{#if user}}
+      <h1 class="display-5 fw-bold">Welcome back, {{user.username}}!</h1>
+      <p class="col-md-8 fs-4">Ready to jam out?</p>
+      <button onClick="window.location.href='/auth/top-music'" class="btn btn-primary btn-lg" type="button">Today's top
+        music
+        &rarr;</button>
+      {{else}}
       <h1 class="display-5 fw-bold">Welcome to Musicify</h1>
       <p class="col-md-8 fs-4">A music database for you and your friends.</p>
       <button onClick="window.location.href='/auth/login'" class="btn btn-primary btn-lg" type="button">Get started
         &rarr;</button>
+      {{/if}}
     </div>
   </div>
 
   <div class="container px-4 py-2" id="featured-3">
+    {{#if user}}
     <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
       <div class="feature col">
-
-        <h3 class="fs-2">Playlists</h3>
-        <p>Create playlists to share with your friends, no matter your streaming platform.</p>
-        <a href="/playlists" class="icon-link d-inline-flex align-items-center">
-          Start creating &rarr;
+        <h3 class="fs-2">Top music</h3>
+        <p>See today's top music.</p>
+        <a href="/top-music" class="icon-link d-inline-flex align-items-center">
+          Top music &rarr;
           <svg class="bi" width="1em" height="1em">
             <use xlink:href="#chevron-right"></use>
           </svg>
@@ -44,6 +52,41 @@
         <h3 class="fs-2">Friends</h3>
         <p>Find your friends, or find people who have similar taste in music as you.</p>
         <a href="/friends" class="icon-link d-inline-flex align-items-center">
+          See my friends &rarr;
+          <svg class="bi" width="1em" height="1em">
+            <use xlink:href="#chevron-right"></use>
+          </svg>
+        </a>
+      </div>
+      <div class="feature col">
+
+        <h3 class="fs-2">Profile</h3>
+        <p>See your information.</p>
+        <a href="/profile" class="icon-link d-inline-flex align-items-center">
+          See my profile &rarr;
+          <svg class="bi" width="1em" height="1em">
+            <use xlink:href="#chevron-right"></use>
+          </svg>
+        </a>
+      </div>
+    </div>
+    {{else}}
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+      <div class="feature col">
+        <h3 class="fs-2">Playlists</h3>
+        <p>Create playlists to share with your friends, no matter your streaming platform.</p>
+        <a href="/auth/login" class="icon-link d-inline-flex align-items-center">
+          Start creating &rarr;
+          <svg class="bi" width="1em" height="1em">
+            <use xlink:href="#chevron-right"></use>
+          </svg>
+        </a>
+      </div>
+      <div class="feature col">
+
+        <h3 class="fs-2">Friends</h3>
+        <p>Find your friends, or find people who have similar taste in music as you.</p>
+        <a href="/auth/login" class="icon-link d-inline-flex align-items-center">
           Get sharing &rarr;
           <svg class="bi" width="1em" height="1em">
             <use xlink:href="#chevron-right"></use>
@@ -54,14 +97,15 @@
 
         <h3 class="fs-2">Favorites</h3>
         <p>Never forget your favorite songs.</p>
-        <a href="#" class="icon-link d-inline-flex align-items-center">
-          Save your favorites &rarr;
+        <a href="/auth/login" class="icon-link d-inline-flex align-items-center">
+          Get saving &rarr;
           <svg class="bi" width="1em" height="1em">
             <use xlink:href="#chevron-right"></use>
           </svg>
         </a>
       </div>
     </div>
+    {{/if}}
   </div>
 
 </div>

@@ -34,10 +34,6 @@ router
       const user = req.session?.user;
       const songReviews = await reviews.getSongReviewBySongId(req.params.id);
 
-      console.log(song);
-      console.log(user);
-      console.log(songReviews);
-
       res.status(200).render("song", {
         song: song,
         user: user ? user : "User not found",
