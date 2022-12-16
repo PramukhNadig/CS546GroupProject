@@ -16,9 +16,11 @@ You should have a label for both the username and password inputs referencing th
     <p>Welcome</p>
     <form method="POST" action="/auth/login" id="login-form">
         <label for="usernameInput" id="usernameLabel">Username:</label>
-        <input type="text" id="usernameInput" name="usernameInput">
+        <input type="text" id="usernameInput" name="usernameInput"> <br>
+
         <label for="passwordInput" id="passwordLabel">Password:</label>
-        <input type="password" id="passwordInput" name="passwordInput">
+        <input type="password" id="passwordInput" name="passwordInput"><br>
+        
         <button type="submit">Login</button>
     </form>
     {{#if error}}

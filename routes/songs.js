@@ -11,22 +11,23 @@ router.route('/').get(async (req, res) => {
 router.route('/:id').get(async (req, res) => {
     try {
         const song = await songs.getSongById(req.params.id);
+        song.id = song._id.toString()
+        const user = req.session?.user;
         const songReviews = await reviews.getSongReviewBySongId(req.params.id);
+        
+        console.log(song);
+        console.log(user);
         console.log(songReviews);
-        if (songReviews.length > 0) {
 
-            res.render('songs', {
-                song: song,
-                songReviews: songReviews
-            });
-        } else {
-            res.render('songs', {
-                song: song
-            });
-        }
+        res.status(200).render('song', {
+            song: song,
+            user: user ? user : "User not found",
+            songReviews: songReviews,
+            hasSongReviews: songReviews.length > 0 ? true : false
+        });
     } catch (e) {
-        res.status(404).json({
-            error: 'Song not found'
+        res.status(404).render('error', {
+            error: e
         });
     }
 });

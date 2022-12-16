@@ -1,6 +1,6 @@
 const mongodb = require('mongodb');
 const songsDatabase = require('../config/mongoCollections').songs;
-const usersDatabase = require('../config/mongoCollections').users;
+
 const {
     ObjectId
 } = require('mongodb');
