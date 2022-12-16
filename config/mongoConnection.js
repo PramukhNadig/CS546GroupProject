@@ -4,6 +4,7 @@ const mongoConfig = {
   database: process.env.MONGO_SERVER_DB || "musicify"
 };
 
+
 let _connection = undefined;
 let _db = undefined;
 
@@ -13,7 +14,6 @@ module.exports = {
       _connection = await MongoClient.connect(mongoConfig.serverUrl);
       _db = await _connection.db(mongoConfig.database);
     }
-
     return _db;
   },
   closeConnection: () => {

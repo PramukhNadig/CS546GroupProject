@@ -27,17 +27,30 @@ let exportedMethods = {
         if (!releaseYear || typeof releaseYear !== 'number') throw 'You must provide a release year for your album';
         if (!genre || typeof genre !== 'string') throw 'You must provide a genre for your album';
         if (!songs || !Array.isArray(songs)) throw 'You must provide an array of songs for your album';
-
+        
         const reviews = [];
         const albumCollection = await albumsDatabase();
 
+        let minutes = albumLength.split(":")[0];
+        let seconds = albumLength.split(":")[1];
+        minutes = parseInt(minutes);
+        seconds = parseInt(seconds);
+
+        if (minutes < 0 || minutes > 59) throw 'Minutes must be between 0 and 59';
+        if (seconds < 0 || seconds > 59) throw 'Seconds must be between 0 and 59';
+
+        if (isNaN(minutes) || isNaN(seconds)) throw 'Song length must be in the format mm:ss (minutes:seconds)';
+        if (minutes === 0 && seconds === 0) throw 'Song length must be greater than 0';
+
+        if (parseInt(releaseYear) < 0) throw 'Release year must be greater than 0';
+
         const newAlbum = {
-            title: title,
-            artist: artist,
-            albumLength: albumLength,
-            releaseYear: releaseYear,
+            title: title.trim(),
+            artist: artist.trim(),
+            albumLength: albumLength.trim(),
+            releaseYear: releaseYear.trim(),
             genre: genre,
-            songs: songs,
+            songs: songs.trim(),
             reviews: reviews
         };
 
@@ -151,27 +164,27 @@ let exportedMethods = {
         const updatedAlbumData = {};
 
         if (updatedAlbum.title) {
-            updatedAlbumData.title = updatedAlbum.title;
+            updatedAlbumData.title = updatedAlbum.title.trim();
         }
 
         if (updatedAlbum.artist) {
-            updatedAlbumData.artist = updatedAlbum.artist;
+            updatedAlbumData.artist = updatedAlbum.artist.trim();
         }
 
         if (updatedAlbum.albumLength) {
-            updatedAlbumData.albumLength = updatedAlbum.albumLength;
+            updatedAlbumData.albumLength = updatedAlbum.albumLength.trim();
         }
 
         if (updatedAlbum.releaseYear) {
-            updatedAlbumData.releaseYear = updatedAlbum.releaseYear;
+            updatedAlbumData.releaseYear = updatedAlbum.releaseYear.trim();
         }
 
         if (updatedAlbum.genre) {
-            updatedAlbumData.genre = updatedAlbum.genre;
+            updatedAlbumData.genre = updatedAlbum.genre.trim();
         }
 
         if (updatedAlbum.songs) {
-            updatedAlbumData.songs = updatedAlbum.songs;
+            updatedAlbumData.songs = updatedAlbum.songs.trim();
         }
 
         let updateCommand = {
@@ -190,7 +203,7 @@ let exportedMethods = {
 
         const als = await this.getAllAlbums();
         const searchedAlbums = als.filter(album => {
-            return album.title.includes(searchTerm)
+            return album.title.toLowerCase().includes(searchTerm.toLowerCase())
         });
 
         return searchedAlbums;

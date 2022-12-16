@@ -5,22 +5,24 @@ const { UserError } = require("../helpers/userHelper");
 
 const { users } = require("../data");
 
-const renderLogin = (res, error) =>
+const renderLogin = (req, res, error) =>
   res.render("auth", {
     login: true,
     layout: false,
     title: "Log in",
     target: "/auth/login",
     error,
+    user: req?.session?.user
   });
 
-const renderRegister = (res, error) =>
+const renderRegister = (req, res, error) =>
   res.render("auth", {
     login: false,
     layout: false,
     title: "Sign up",
     target: "/auth/register",
     error,
+    user: req?.session?.user,
   });
 
 const handleError = async (error, res) => {
@@ -42,7 +44,7 @@ router.route("/").get(async (req, res) => {
     return res.redirect("/");
   }
 
-  return renderLogin(res);
+  return renderLogin(req, res);
 });
 
 router
@@ -52,7 +54,7 @@ router
     if (req.session?.user) {
       return res.redirect("/");
     }
-    return renderRegister(res);
+    return renderRegister(req, res);
   })
   .post(async (req, res) => {
     try {
@@ -71,7 +73,7 @@ router
       return res.redirect("/");
     } catch (e) {
       if (e instanceof UserError) {
-        return renderRegister(res, e.message);
+        return renderRegister(req, res, e.message);
       }
       return handleError(e, res);
     }
@@ -84,7 +86,7 @@ router
     if (req.session?.user) {
       return res.redirect("/");
     }
-    return renderLogin(res);
+    return renderLogin(req, res);
   })
   .post(async (req, res) => {
     try {
@@ -101,13 +103,19 @@ router
       if (!resp?.authenticatedUser)
         throw new UserError("Either the username or password is invalid");
       // @ts-ignore - hack to ignore
-      req.session.user = { username: usernameInput.toLowerCase() };
+      const username = usernameInput.toLowerCase()
+      const userId = (await users.getUserByUsername(usernameInput))._id.toString()
+      console.log(req.session)
+      req.session.user = { 
+        username: username,
+        id: userId
+      };
 
       res.redirect("/");
     } catch (e) {
       // TODO proper status
       if (e instanceof UserError) {
-        return renderLogin(res, e.message);
+        return renderLogin(req, res, e.message);
       }
       return handleError(e, res);
     }
@@ -115,12 +123,12 @@ router
 
 router.route("/logout").get(async (req, res) => {
   // @ts-ignore
-  if (!req.session?.user) return renderLogin(res, "You have been logged out.");
+  if (!req.session?.user) return renderLogin(req, res, "You have been logged out.");
 
   // @ts-ignore
   req.session.destroy();
 
-  return renderLogin(res, "You have been logged out.");
+  return renderLogin(req, res, "You have been logged out.");
 });
 
 module.exports = router;

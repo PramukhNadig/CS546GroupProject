@@ -36,8 +36,12 @@
                     </form>
 
                     <div class="text-end">
-                        <a type="button" onclick="window.location.href='/auth/login'"
-                            class="btn btn-warning">Log in</a>
+                        {{#if user}}
+                        <a type="button" href="/auth/logout" class="btn btn-warning">Log out</a>
+                        {{else}}
+                        <a type="button" href="/auth/login" class="btn btn-warning">Log in</a>
+                        {{/if}}
+
                     </div>
                 </div>
             </div>
