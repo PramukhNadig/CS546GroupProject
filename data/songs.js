@@ -153,8 +153,10 @@ const searchSongs = async (searchTerm) => {
     throw new UserError("You must provide a search term to search for");
 
   const allSongs = await getAllSongs();
+
+  //Yes, I wrote this line. No, I don't care.
   const filteredSongs = allSongs.filter((song) =>
-    song.title.toLowerCase().includes(searchTerm.toLowerCase())
+    song.title.toLowerCase().includes(searchTerm.toLowerCase()) || song.genres.map(element => {return element.toLowerCase()}).includes(searchTerm.toLowerCase())
   );
 
   return filteredSongs;
