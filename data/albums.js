@@ -231,8 +231,10 @@ let exportedMethods = {
       throw new UserError("You must provide a search term");
 
     const als = await this.getAllAlbums();
+
+    //Yes, I wrote this line. No, I don't care.
     const searchedAlbums = als.filter((album) => {
-      return album.title.toLowerCase().includes(searchTerm.toLowerCase());
+      return album.title.toLowerCase().includes(searchTerm.toLowerCase()) || album.genre.toLowerCase().includes(searchTerm.toLowerCase());
     });
 
     return searchedAlbums;
