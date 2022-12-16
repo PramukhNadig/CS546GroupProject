@@ -15,14 +15,27 @@ const createSong = async (album, title, artist, songLength, releaseYear, genres,
     const reviews = [];
     const songCollection = await songsDatabase();
 
+    let minutes = songLength.split(":")[0];
+    let seconds = songLength.split(":")[1];
+    minutes = parseInt(minutes);
+    seconds = parseInt(seconds);
+
+    if (minutes < 0 || minutes > 59) throw 'Minutes must be between 0 and 59';
+    if (seconds < 0 || seconds > 59) throw 'Seconds must be between 0 and 59';
+
+    if (isNaN(minutes) || isNaN(seconds)) throw 'Song length must be in the format mm:ss (minutes:seconds)';
+    if (minutes === 0 && seconds === 0) throw 'Song length must be greater than 0';
+
+    if (parseInt(releaseYear) < 0) throw 'Release year must be greater than 0';
+    
     const newSong = {
-        album: album,
-        title: title,
-        artist: artist,
-        songLength: songLength,
+        album: album.trim(),
+        title: title.trim(),
+        artist: artist.trim(),
+        songLength: songLength.trim(),
         releaseYear: releaseYear,
         genres: genres,
-        lyrics: lyrics,
+        lyrics: lyrics.trim(),
         reviews: reviews
     };
 
@@ -125,7 +138,7 @@ const addReviewToSong = async (songId, reviewId) => {
             reviews: parsedReviewId
         }
     });
-
+    
     if (updatedInfo.modifiedCount === 0) throw 'Could not add review to song';
 
     return await getSongById(songId);
@@ -140,6 +153,15 @@ const searchArtists = async (searchTerm) => {
     const uniqueArtists = [...new Set(filteredSongs.map(song => song.artist))];
     return uniqueArtists;
 }
+
+const getTop5RatedSongs = async () => {
+    const songCollection = await songsDatabase();
+    const songs = await songCollection.find({}).toArray();
+    const sortedSongs = songs.sort((a, b) => b.avgReview - a.avgReview);
+    const top5Songs = sortedSongs.slice(0, 5);
+    return top5Songs;
+}
+
 module.exports = {
     createSong,
     getAllSongs,
@@ -150,5 +172,6 @@ module.exports = {
     getSongsWithMinAvgReview,
     searchSongs,
     searchArtists,
-    addReviewToSong
+    addReviewToSong,
+    getTop5RatedSongs
 };
