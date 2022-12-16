@@ -22,5 +22,4 @@ module.exports = {
   albums: getCollectionFn("albums"),
   songReviews: getCollectionFn("songReviews"),
   albumReviews: getCollectionFn("albumReviews"),
-
 };

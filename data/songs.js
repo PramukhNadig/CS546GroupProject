@@ -40,12 +40,15 @@ const createSong = async (
     throw new UserError("Seconds must be between 0 and 59");
 
   if (isNaN(minutes) || isNaN(seconds))
-    throw "Song length must be in the format mm:ss (minutes:seconds)";
+    throw new UserError(
+      "Song length must be in the format mm:ss (minutes:seconds)"
+    );
   if (minutes === 0 && seconds === 0)
-    throw "Song length must be greater than 0";
+    throw new UserError("Song length must be greater than 0");
 
   // @ts-ignore
-  if (parseInt(releaseYear) < 0) throw "Release year must be greater than 0";
+  if (parseInt(releaseYear) < 0)
+    throw new UserError("Release year must be greater than 0");
 
   const newSong = {
     album: album.trim(),
@@ -59,7 +62,7 @@ const createSong = async (
   };
 
   const insertInfo = await songCollection.insertOne(newSong);
-  if (insertInfo.insertedCount === 0) throw "Could not add song";
+  if (insertInfo.insertedCount === 0) throw new Error("Could not add song");
 
   const newId = insertInfo.insertedId;
   const song = await getSongById(newId);
@@ -75,21 +78,21 @@ const getAllSongs = async () => {
 };
 
 const getSongById = async (id) => {
-  if (!id) throw "You must provide an id to search for";
+  if (!id) throw new UserError("You must provide an id to search for");
 
   const songCollection = await songsDatabase();
   const parsedId = new ObjectId(id);
   const song = await songCollection.findOne({
     _id: parsedId,
   });
-  if (song === null) throw "No song with that id";
+  if (song === null) throw new UserError("No song with that id");
 
   return song;
 };
 
 const getSongsByArtist = async (artist) => {
   if (!artist || typeof artist !== "string")
-    throw "You must provide an artist to search for";
+    throw new UserError("You must provide an artist to search for");
 
   const songCollection = await songsDatabase();
   const songs = await songCollection
@@ -103,7 +106,7 @@ const getSongsByArtist = async (artist) => {
 
 const getSongsByGenre = async (genre) => {
   if (!genre || typeof genre !== "string")
-    throw "You must provide a genre to search for";
+    throw new UserError("You must provide a genre to search for");
 
   const songCollection = await songsDatabase();
   const songs = await songCollection
@@ -117,7 +120,7 @@ const getSongsByGenre = async (genre) => {
 
 const getSongsByTitle = async (title) => {
   if (!title || typeof title !== "string")
-    throw "You must provide a title to search for";
+    throw new UserError("You must provide a title to search for");
 
   const songCollection = await songsDatabase();
   const songs = await songCollection
@@ -131,7 +134,7 @@ const getSongsByTitle = async (title) => {
 
 const getSongsWithMinAvgReview = async (avgReview) => {
   if (!avgReview || typeof avgReview !== "number")
-    throw "You must provide a number to search for";
+    throw new UserError("You must provide a number to search for");
 
   const songCollection = await songsDatabase();
   const songs = await songCollection
@@ -147,7 +150,7 @@ const getSongsWithMinAvgReview = async (avgReview) => {
 
 const searchSongs = async (searchTerm) => {
   if (!searchTerm || typeof searchTerm !== "string")
-    throw "You must provide a search term to search for";
+    throw new UserError("You must provide a search term to search for");
 
   const allSongs = await getAllSongs();
   const filteredSongs = allSongs.filter((song) =>
