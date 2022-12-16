@@ -73,7 +73,20 @@ const checkUser = async (username, password) => {
   return { authenticatedUser: true };
 };
 
+const getUserByUsername = async (username) => {
+  if (!username || typeof username !== 'string') throw 'You must provide a username to search for';
+
+  // can use findOne since username should be a unique identifier
+  const userCollection = await users();
+  const user = await userCollection.findOne({
+    username: username
+  });
+
+  return user;
+}
+
 module.exports = {
   createUser,
   checkUser,
+  getUserByUsername,
 };
