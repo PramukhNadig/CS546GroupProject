@@ -5,6 +5,24 @@ const { UserError } = require("../helpers/userHelper");
 
 const { users } = require("../data");
 
+const renderLogin = (res, error) =>
+  res.render("auth", {
+    login: true,
+    layout: false,
+    title: "Log in",
+    target: "/auth/login",
+    error,
+  });
+
+const renderRegister = (res, error) =>
+  res.render("auth", {
+    login: false,
+    layout: false,
+    title: "Sign up",
+    target: "/auth/register",
+    error,
+  });
+
 const handleError = async (error, res) => {
   if (!!error?._status) {
     return res
@@ -24,7 +42,7 @@ router.route("/").get(async (req, res) => {
     return res.redirect("/");
   }
 
-  return res.render("userLogin", { title: "Login user" });
+  return renderLogin(res);
 });
 
 router
@@ -34,7 +52,7 @@ router
     if (req.session?.user) {
       return res.redirect("/");
     }
-    return res.render("userRegister", { title: "Register user" });
+    return renderRegister(res);
   })
   .post(async (req, res) => {
     try {
@@ -52,6 +70,9 @@ router
 
       return res.redirect("/");
     } catch (e) {
+      if (e instanceof UserError) {
+        return renderRegister(res, e.message);
+      }
       return handleError(e, res);
     }
   });
@@ -63,7 +84,7 @@ router
     if (req.session?.user) {
       return res.redirect("/");
     }
-    return res.render("userLogin", { title: "Login user" });
+    return renderLogin(res);
   })
   .post(async (req, res) => {
     try {
@@ -84,6 +105,10 @@ router
 
       res.redirect("/");
     } catch (e) {
+      // TODO proper status
+      if (e instanceof UserError) {
+        return renderLogin(res, e.message);
+      }
       return handleError(e, res);
     }
   });
