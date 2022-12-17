@@ -4,6 +4,7 @@ const data = require("../data");
 const songs = data.songs;
 const reviews = data.songReviews;
 const users = data.users;
+const playlists = data.playlists;
 
 const { UserError } = require("../helpers/userHelper");
 
@@ -25,6 +26,28 @@ router.route("/").get(async (req, res) => {
   res.render("search");
 });
 
+router.route("/:id/playlists").post(async (req, res) => {
+  if (!req.session?.user)
+    return res.redirect(
+      "/auth/login?next=" + encodeURIComponent(req.originalUrl)
+    );
+
+  const body = req.body;
+  let batch = body?.playlist || [];
+
+  if (typeof batch == "string") batch = [playlists];
+
+  const results = await Promise.all(
+    batch.map((playlist) =>
+      playlists.addSongToPlaylist(playlist, req.params.id)
+    )
+  );
+
+  const { id } = req.params;
+
+  res.redirect("/song/" + encodeURIComponent(id));
+});
+
 router
   .route("/:id")
   .get(async (req, res) => {
@@ -34,11 +57,28 @@ router
       const user = req.session?.user;
       const songReviews = await reviews.getSongReviewBySongId(req.params.id);
 
+      const userPlaylists = await playlists.getPlaylistsByUserId(user.id);
+
+      // playlists this song is in
+      const relevantPlaylists = userPlaylists.filter((playlist) =>
+        playlist?.Songs?.find((internal) => internal == song.id)
+      );
+
+      // the rest of the playlists
+      const otherPlaylists = userPlaylists.filter(
+        (playlist) =>
+          !relevantPlaylists.find(
+            (p) => p._id.toString() === playlist._id.toString()
+          )
+      );
+
       res.status(200).render("song", {
         song: song,
         user: user ? user : "User not found",
         songReviews: songReviews,
         hasSongReviews: songReviews.length > 0 ? true : false,
+        playlists: relevantPlaylists,
+        allUserPlaylists: otherPlaylists,
       });
     } catch (e) {
       return handleError(e, res);

@@ -10,6 +10,7 @@ const bcrypt = require("bcrypt");
 const {
   users
 } = require("../config/mongoCollections");
+const { ObjectId } = require("mongodb");
 
 const songs = require("./songs");
 const albums = require("./albums");
@@ -271,6 +272,17 @@ const getUserByUsername = async (username) => {
 
   return user;
 }
+const getUserByID = async (id) => {
+  if (!id || typeof id !== 'string') throw 'You must provide an id to search for';
+
+  // can use findOne since username should be a unique identifier
+  const userCollection = await users();
+  const user = await userCollection.findOne({
+    _id: new ObjectId(id)
+  });
+
+  return user;
+}
 
 const removeFavoriteSong = async (username, songId) => {
   if (!username || typeof username !== "string")
@@ -371,6 +383,8 @@ module.exports = {
   removeFriend,
   removeFavoriteSong,
   removeFavoriteAlbum,
-  getUserFriends
+  getUserFriends,
+  getUserByID,
+
 };
 

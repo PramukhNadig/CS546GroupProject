@@ -31,7 +31,7 @@ async function createPlaylist(playlistName, songs, userId) {
 
   const newId = insertInfo.insertedId;
 
-  const playlist = await this.getPlaylistById(newId);
+  const playlist = await getPlaylistById(newId);
   return playlist;
 }
 
@@ -55,18 +55,22 @@ async function getPlaylistById(id) {
   return playlist;
 }
 
-async function getPlaylistByUserId(userId) {
+async function getPlaylistsByUserId(userId) {
   if (!userId) throw new UserError("You must provide a user id to search for");
 
   const playlistCollection = await playlists();
-  const playlist = await playlistCollection
+  const ret = await playlistCollection
     .find({
       UserID: new ObjectId(userId),
     })
     .toArray();
-  if (playlist === null) throw new UserError("User has no playlists");
+  // Create a Favorites playlist
+  if (ret === null || (ret && ret.length < 1)) {
+    const favoritePlaylist = await createPlaylist("Favorites", [], userId);
+    ret.push(favoritePlaylist);
+  }
 
-  return playlist;
+  return ret;
 }
 
 async function updatePlaylist(id, updatedPlaylist) {
@@ -109,9 +113,9 @@ async function addSongToPlaylist(playlistId, songId) {
 
   const playlistCollection = await playlists();
 
-  const playlist = await this.getPlaylistById(playlistId);
+  const playlist = await getPlaylistById(playlistId);
   let songs = playlist.Songs;
-  songs.push(songId);
+  songs.push(new ObjectId(songId));
 
   let updateCommand = {
     $set: {
@@ -130,7 +134,7 @@ async function removeSongFromPlaylist(playlistId, songId) {
 
   const playlistCollection = await playlists();
 
-  const playlist = await this.getPlaylistById(playlistId);
+  const playlist = await getPlaylistById(playlistId);
   let songs = playlist.Songs;
   let index = songs.indexOf(songId);
   if (index > -1) {
@@ -152,7 +156,7 @@ module.exports = {
   createPlaylist,
   getAllPlaylists,
   getPlaylistById,
-  getPlaylistByUserId,
+  getPlaylistsByUserId,
   updatePlaylist,
   deletePlaylist,
   addSongToPlaylist,

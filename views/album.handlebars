@@ -5,16 +5,15 @@
         <p>Artist: {{album.artist}}</p>
         <p>Genre(s): {{album.genre}}</p>
         <p>Released: {{album.releaseYear}}</p>
-        {{#if songs}}
+    <div class="album-song-details">
         <h2>Songs</h2>
-        <div class="songs">
-            {{#each songs}}
+        {{#each songs}}
             <div class="song">
-                <h2><a href="./song/{{_id}}">{{title}}</a></h2>
+                <h4><a href="../song/{{_id}}">{{title}}</a></h4>
             </div>
-            {{/each}}
+        {{/each}}
     </div>
-    {{/if}}
+
     <div id="addReview">
         <h2>Add Review</h2>
         <div id="addReviewDetails">
@@ -37,7 +36,6 @@
         </div>
         <div id="error" class="error" hidden>Error:</div>
     </div>
-
     <h1>Reviews</h1>
     {{#if hasAlbumReviews}}
     <div class="reviews">
@@ -54,7 +52,6 @@
     {{else}}
     <p>None</p>
     {{/if}}
-
     {{#if admin}}
     <div id="addSong">
         <h2>Add Song</h2>
