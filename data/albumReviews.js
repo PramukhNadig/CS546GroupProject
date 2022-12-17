@@ -48,9 +48,9 @@ async function createAlbumReview(
   const albumReviewsCollection = await albumReviews();
 
   let newAlbumReview = {
-    albumID: ObjectId(albumID),
+    albumID: new ObjectId(albumID),
     title: title,
-    userID: ObjectId(userID),
+    userID: new ObjectId(userID),
     name: name,
     rating: rating,
     comment: comment,
@@ -94,7 +94,7 @@ async function getAlbumReviewById(id) {
 
   const albumReviewsCollection = await albumReviews();
   const albumReview = await albumReviewsCollection.findOne({
-    _id: ObjectId(id),
+    _id: new ObjectId(id),
   });
   if (albumReview === null) throw new UserError("No album review with that id");
 
@@ -108,7 +108,7 @@ async function getAlbumReviewsByAlbumId(albumID) {
   const albumReviewsCollection = await albumReviews();
   const albumReviewList = await albumReviewsCollection
     .find({
-      albumID: ObjectId(albumID),
+      albumID: new ObjectId(albumID),
     })
     .toArray();
 
@@ -121,7 +121,7 @@ async function getAlbumReviewsByUserId(userID) {
   const albumReviewsCollection = await albumReviews();
   const albumReviewList = await albumReviewsCollection
     .find({
-      userID: ObjectId(userID),
+      userID: new ObjectId(userID),
     })
     .toArray();
 
@@ -138,7 +138,7 @@ async function updateAlbumReview(id, updatedAlbumReview) {
   const updatedAlbumReviewData = {};
 
   if (updatedAlbumReview.albumID) {
-    updatedAlbumReviewData.albumID = ObjectId(updatedAlbumReview.albumID);
+    updatedAlbumReviewData.albumID = new ObjectId(updatedAlbumReview.albumID);
   }
 
   if (updatedAlbumReview.title) {
@@ -146,7 +146,7 @@ async function updateAlbumReview(id, updatedAlbumReview) {
   }
 
   if (updatedAlbumReview.userID) {
-    updatedAlbumReviewData.userID = ObjectId(updatedAlbumReview.userID);
+    updatedAlbumReviewData.userID = new ObjectId(updatedAlbumReview.userID);
   }
 
   if (updatedAlbumReview.name) {
@@ -165,7 +165,7 @@ async function updateAlbumReview(id, updatedAlbumReview) {
     $set: updatedAlbumReviewData,
   };
   const query = {
-    _id: ObjectId(id),
+    _id: new ObjectId(id),
   };
   await albumReviewsCollection.updateOne(query, updateCommand);
 }
@@ -175,7 +175,7 @@ async function deleteAlbumReview(id) {
 
   const albumReviewsCollection = await albumReviews();
   const deletionInfo = await albumReviewsCollection.removeOne({
-    _id: ObjectId(id),
+    _id: new ObjectId(id),
   });
   if (deletionInfo.deletedCount === 0) {
     throw new Error(`Could not delete album review with id of ${id}`);

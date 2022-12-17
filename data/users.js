@@ -56,9 +56,10 @@ const createUser = async (username, password) => {
 
   if (!insertInfo?.acknowledged) throw new Error("Could not add user");
 
-  return {
-    userInserted: true,
-  };
+  const newId = insertInfo.insertedId;
+
+  newUser._user = newId;
+  return newUser;
 };
 
 const checkUser = async (username, password) => {
@@ -88,7 +89,7 @@ const checkUser = async (username, password) => {
   };
 };
 
-const makeAdmin = async (username, adminFlag) => {
+const makeAdmin = async (username) => {
   if (!username || typeof username !== "string")
     throw new UserError("Username must be provided");
   username = username?.toLowerCase();
@@ -100,7 +101,7 @@ const makeAdmin = async (username, adminFlag) => {
     },
     {
       $set: {
-        adminFlag: adminFlag,
+        adminFlag: true,
       },
     }
   );
@@ -108,7 +109,7 @@ const makeAdmin = async (username, adminFlag) => {
   if (!updatedInfo?.acknowledged) throw new Error("Could not make user admin");
 
   return {
-    adminFlag: adminFlag,
+    adminFlag: true,
   };
 };
 
@@ -145,7 +146,7 @@ const addFriend = async (username, friendUsername) => {
   const friend = await getUserByUsername(friendUsername);
   if (!friend) throw new UserError("There is no user with that username");
 
-  const updatedUser = await users.updateOne(
+  const updatedUser = await userCollection.updateOne(
     {
       username: username,
     },
@@ -173,7 +174,7 @@ const removeFriend = async (username, friendUsername) => {
       username: username,
     });
     if (!user) throw new UserError("There is no user with that username");
-    const updatedUser = await users.updateOne(
+    const updatedUser = await userCollection.updateOne(
       {
         username: username,
       },
@@ -205,6 +206,7 @@ const getUserByUsername = async (username) => {
 
   return user;
 };
+
 const getUserByID = async (id) => {
   if (!id || typeof id !== "string")
     throw "You must provide an id to search for";
@@ -214,6 +216,8 @@ const getUserByID = async (id) => {
   const user = await userCollection.findOne({
     _id: new ObjectId(id),
   });
+
+  delete user.password;
 
   return user;
 };

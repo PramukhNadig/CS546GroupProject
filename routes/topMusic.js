@@ -50,8 +50,8 @@ router.route("/").get(async (req, res) => {
       );
       song.reviews = songReviewsWithUser;
       song.averageRating =
-        songReviewsWithUser.reduce((acc, cur) => acc + cur.rating, 0) /
-          songReviewsWithUser.length || -1;
+        Math.floor((songReviewsWithUser.reduce((acc, cur) => acc + cur.rating, 0) /
+          songReviewsWithUser.length || -1) * 10) / 10;
       return song;
     })
   );

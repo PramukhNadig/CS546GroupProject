@@ -12,9 +12,9 @@ const constructorMethod = (app) => {
 
   app.use("/song", songs);
 
-  app.use("/top-songs", topMusic);
-
   app.use("/album", albums);
+
+  app.use("/top-songs", topMusic);
 
   app.use("/search", search);
 
@@ -32,7 +32,7 @@ const constructorMethod = (app) => {
   );
 
   app.use("*", (req, res) => {
-    res.sendStatus(404);
+    res.render('404');
   });
 };
 
