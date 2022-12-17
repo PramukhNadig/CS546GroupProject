@@ -272,7 +272,6 @@ const getUserByID = async (id) => {
   const user = await userCollection.findOne({
     _id: new ObjectId(id)
   });
-
   return user;
 }
 
@@ -352,7 +351,7 @@ const getUserFriends = async (username) => {
   try {
     validateUsername(username);
   const userCollection = await users();
-    const user = userCollection.findOne({
+    const user = await userCollection.findOne({
       username: username
     });
     if (!user) throw new UserError("There is no user with that username");
