@@ -6,7 +6,8 @@
 2. Install NodeJS
 3. Install MongoDB
 4. Install the dependencies with `npm install`
-5. Run the dev server with `npm start`
+5. Seed the DB with `npm run seed`
+6. Run the dev server with `npm start`
 
 ## Environment variables
 
