@@ -9,6 +9,7 @@ PlaylistName: String
 
 const mongoCollections = require("../config/mongoCollections");
 const playlists = mongoCollections.playlists;
+const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 const { UserError } = require("../helpers/userHelper");
 
@@ -28,6 +29,21 @@ async function createPlaylist(playlistName, songs, userId) {
   const insertInfo = await playlistCollection.insertOne(newPlaylist);
   if (insertInfo.insertedCount === 0)
     throw new UserError("Could not add playlist");
+
+  // Also add playlist id to user's playlists
+  const usersCollection = await users();
+  const user = await usersCollection.findOne({
+    _id: new ObjectId(userId),
+  });
+  if (user === null) throw new UserError("No user with that id");
+  const updatedPlaylists = user.playlists;
+  updatedPlaylists.push(insertInfo.insertedId);
+  const updatedUser = await usersCollection.updateOne(
+    { _id: new ObjectId(userId) },
+    { $set: { playlists: updatedPlaylists } }
+  );
+  if (updatedUser.modifiedCount === 0)
+    throw new UserError("Could not add playlist to user");
 
   const newId = insertInfo.insertedId;
 
@@ -68,7 +84,20 @@ async function getPlaylistsByUserId(userId) {
   if (ret === null || (ret && ret.length < 1)) {
     const favoritePlaylist = await createPlaylist("Favorites", [], userId);
     ret.push(favoritePlaylist);
-  }
+    const favoritePlaylistId = favoritePlaylist._id;
+    // Push the Favorites playlist to the user's playlists
+    const usersCollection = await users();
+    const user = await usersCollection.findOne({
+      _id: new ObjectId(userId),
+    });
+    if (user === null) throw new UserError("No user with that id");
+    const updatedPlaylists = user.playlists;
+    updatedPlaylists.push(favoritePlaylistId);
+    const updatedUser = await usersCollection.updateOne(
+      { _id: new ObjectId(userId) },
+      { $set: { playlists: updatedPlaylists } }
+    );
+  }  
 
   return ret;
 }
@@ -97,14 +126,30 @@ async function updatePlaylist(id, updatedPlaylist) {
 
 async function deletePlaylist(id) {
   if (!id) throw new UserError("You must provide an id to search for");
-
+  const playlist = await getPlaylistById(id);
+  
   const playlistCollection = await playlists();
-  const deletionInfo = await playlistCollection.removeOne({
+  const deletionInfo = await playlistCollection.deleteOne({
     _id: new ObjectId(id),
   });
   if (deletionInfo.deletedCount === 0) {
     throw new Error(`Could not delete playlist with id of ${id}`);
   }
+  // Also remove playlist id from user's playlists
+
+  const userId = playlist.UserID;
+  const usersCollection = await users();
+  const user = await usersCollection.findOne({
+    _id: new ObjectId(userId),
+  });
+  if (user === null) throw new UserError("No user with that id");
+  const currentPlaylists = user.playlists;
+  const updatedPlaylists = currentPlaylists.filter((playlistId) => playlistId.toString() !== id);
+  // console.log(updatedPlaylists)
+  const updatedUser = await usersCollection.updateOne(
+    { _id: userId },
+    { $set: { playlists: updatedPlaylists } }
+  );
 }
 
 async function addSongToPlaylist(playlistId, songId) {

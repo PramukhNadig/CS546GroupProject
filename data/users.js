@@ -39,7 +39,12 @@ const createUser = async (username, password) => {
   const newUser = {
     username,
     password: hash,
-    reviews: [],
+    // favoriteSongs: [], // favoriteSongs deprecated, added to a playlist called "favorites" instead
+    // favoriteAlbums: [],
+    playlists: [], // array of playlist ids. "favorites" playlist gets added in playlist.getPlaylistsByUserId
+    // reviews: [], // deprecated, split reviews into songReviews and albumReviews
+    songReviews: [],
+    albumReviews: [],
     friends: [],
     adminFlag: false,
   };
@@ -225,7 +230,7 @@ const getUserFriends = async (username) => {
   try {
     validateUsername(username);
     const userCollection = await users();
-    const user = userCollection.findOne({
+    const user = await userCollection.findOne({
       username: username,
     });
     if (!user) throw new UserError("There is no user with that username");
