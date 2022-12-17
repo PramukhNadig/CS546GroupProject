@@ -108,6 +108,7 @@ async function deletePlaylist(id) {
 }
 
 async function addSongToPlaylist(playlistId, songId) {
+  console.log("addSongToPlaylist(playlistId, songId)", playlistId, songId);
   if (!playlistId) throw new UserError("You must provide a playlist id");
   if (!songId) throw new UserError("You must provide a song id");
 

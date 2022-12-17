@@ -36,7 +36,7 @@ router.route("/:id/playlists").post(async (req, res) => {
   const body = req.body;
   let batch = body?.playlist || [];
 
-  if (typeof batch == "string") batch = [playlists];
+  if (typeof batch == "string") batch = [batch];
 
   const results = await Promise.all(
     batch.map((playlist) =>
