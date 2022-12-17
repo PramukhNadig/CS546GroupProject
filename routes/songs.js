@@ -57,7 +57,9 @@ router
       const user = req.session?.user;
       const songReviews = await reviews.getSongReviewBySongId(req.params.id);
 
-      const userPlaylists = user ? await playlists.getPlaylistsByUserId(user.id) : [];
+      const userPlaylists = user
+        ? await playlists.getPlaylistsByUserId(user.id)
+        : [];
 
       // playlists this song is in
       const relevantPlaylists = userPlaylists.filter((playlist) =>
@@ -74,7 +76,7 @@ router
 
       res.status(200).render("song", {
         song: song,
-        user: user ? user : "User not found",
+        user: req?.session?.user,
         songReviews: songReviews,
         hasSongReviews: songReviews.length > 0 ? true : false,
         playlists: relevantPlaylists,
