@@ -13,6 +13,8 @@ const constructorMethod = (app) => {
 
   app.use("/album", albums);
 
+  app.use("/top-songs", topMusic);
+
   app.use("/search", search);
 
   app.use("/friends", friends);
