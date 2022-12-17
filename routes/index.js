@@ -28,7 +28,10 @@ const constructorMethod = (app) => {
   );
 
   app.use("*", (req, res) => {
-    res.render('404');
+    res.render('404', {
+      title: "404",
+      user: req.session?.["user"],
+    });
   });
 };
 
