@@ -19,7 +19,10 @@ async function main() {
         "2:37",
         1971,
         ["Psychedelic", "Pop"],
-        "placeholder lyrics");
+        `Don't go near the water
+        Don't you think it's sad
+        What's happened to the water
+        Our water's going bad`);
 
     const longPromisedRoad = await songs.createSong(
         "Surf's Up",
@@ -28,7 +31,12 @@ async function main() {
         "3:28",
         1971,
         ["Psychedelic", "Pop"],
-        "placeholder lyrics");
+        `So hard to answer future's riddle
+        When ahead is seeming so far behind
+        So hard to laugh a child-like giggle
+        When the tears start to torture my mind
+        So hard to shed the life of before
+        To let my soul automatically soar`);
 
     const takeALoadOffYourFeet = await songs.createSong(
         "Surf's Up",
@@ -37,7 +45,10 @@ async function main() {
         "2:28",
         1971,
         ["Psychedelic", "Pop"],
-        "placeholder lyrics");
+        `I do them when I'm down in the tub
+        With avocado cream they'll take a rub
+        They wrinkle like a-raisins if I stay too long
+        I wouldn't want to do it wrong`);
 
     const disneyGirls = await songs.createSong(
         "Surf's Up",
@@ -46,7 +57,10 @@ async function main() {
         "4:07",
         1971,
         ["Psychedelic", "Pop"],
-        "placeholder lyrics");
+        `Clearing skies and drying eyes
+        Now I see your smile
+        Darkness goes and softness shows
+        A changing style`);
 
     const studentDemonstrationTime = await songs.createSong(
         "Surf's Up",
@@ -55,7 +69,10 @@ async function main() {
         "3:45",
         1971,
         ["Psychedelic", "Pop"],
-        "placeholder lyrics");
+        `Starting out with Berkeley Free Speech
+        And later on at People's Park
+        The winds of change fanned into flames
+        Student demonstrations spark`);
 
     const feelFlows = await songs.createSong(
         "Surf's Up",
@@ -73,7 +90,13 @@ async function main() {
         "1:54",
         1971,
         ["Psychedelic", "Pop"],
-        "placeholder lyrics");
+        `Unfolding, enveloping missiles of soul
+        Recall senses sadly
+        Mirage like soft blue, like lanterns below
+        To light the way gladly
+        Whether whistling heaven's clouds disappear
+        Whether wind withers memory
+        Whether whiteness whisks soft shadows away`);
 
     const aDayInTheLifeOfATree = await songs.createSong(
         "Surf's Up",
@@ -91,7 +114,10 @@ async function main() {
         "2:29",
         1971,
         ["Psychedelic", "Pop"],
-        "placeholder lyrics");
+        `Feel the wind burn through my skin
+        The pain, the air is killing me
+        For years my limbs stretched to the sky
+        A nest for birds to sit and sing`);
 
     const surfs_Up = await songs.createSong(
         "Surf's Up",
@@ -100,7 +126,10 @@ async function main() {
         "4:11",
         1971,
         ["Psychedelic", "Pop"],
-        "placeholder lyrics");
+        `A diamond necklace played the pawn
+        Hand in hand some drummed along, oh
+        To a handsome man and baton
+        A blind class aristocracy`);
 
     const bookOf_Rules = await songs.createSong(
         "Book of Rules",
@@ -109,7 +138,9 @@ async function main() {
         "3:30",
         1973,
         ["Roots Reggae"],
-        "placeholder lyrics");
+        `Isn't it strange how princesses and kings
+        In clown-ragged capers in sawdust rings
+        While common people like you and me`);
 
     const blackOnBlack = await songs.createSong(
         "Book of Rules",
@@ -118,7 +149,10 @@ async function main() {
         "2:40",
         1973,
         ["Roots Reggae"],
-        "placeholder lyrics");
+        `Yes, my skin is black
+        So when you see me come, you can turn your back
+        You ain't gonna be
+        No you'll never be a man like me`);
 
     const peaceAndHarmony = await songs.createSong(
         "Book of Rules",
@@ -127,7 +161,10 @@ async function main() {
         "3:15",
         1973,
         ["Roots Reggae"],
-        "placeholder lyrics");
+        `Wat a liiv an bambaie
+        When the two sevens clash
+        Wat a liiv an bambaie
+        When the two sevens clash`);
 
     const doGoodToEveryone = await songs.createSong(
         "Book of Rules",
@@ -136,7 +173,10 @@ async function main() {
         "2:50",
         1973,
         ["Roots Reggae"],
-        "placeholder lyrics");
+        `Look up a cotton tree out by Ferry police station
+        How beautiful it used to be
+        And it has been destroyed by lightning
+        Earthquake and thunder, I say`);
 
     const world = await songs.createSong(
         "Book of Rules",
@@ -145,7 +185,10 @@ async function main() {
         "4:07",
         1973,
         ["Roots Reggae"],
-        "placeholder lyrics");
+        `Sweet freedom won't you come my way
+        Come along come come along
+        Sweet freedom won't you come my way
+        So long I've been waiting for you my God`);
 
     const sufferingSo = await songs.createSong(
         "Book of Rules",
@@ -154,7 +197,10 @@ async function main() {
         "3:30",
         1973,
         ["Roots Reggae"],
-        "placeholder lyrics");
+        `I've searched every street and avenue and lane
+        To find your address
+        And I'll never ever give up until my sould get some rest
+        Some people are too free`);
 
     const autalene = await songs.createSong(
         "Book of Rules",
@@ -163,7 +209,9 @@ async function main() {
         "3:12",
         1973,
         ["Roots Reggae"],
-        "placeholder lyrics");
+        `We'll be builders for eternity
+        Each is given a bag of tools
+        A shapeless mass and the book of rules`);
 
     const bagaBoo = await songs.createSong(
         "Book of Rules",
@@ -172,7 +220,10 @@ async function main() {
         "2:40",
         1973,
         ["Roots Reggae"],
-        "placeholder lyrics");
+        `Each must make his life as flowing in
+        Tumbling block on a stepping stone
+        While common people like you and me
+        We'll be builders for eternity`);
 
     const wahGoHome = await songs.createSong(
         "Book of Rules",
@@ -181,7 +232,10 @@ async function main() {
         "4:10",
         1973,
         ["Roots Reggae"],
-        "placeholder lyrics");
+        `Look when the rain has fallen from the sky
+        You know the sun will be only with us for a while
+        While common people like you and me
+        We'll be builders for eternity`);
 
     const overAndOver = await songs.createSong(
         "Book of Rules",
@@ -190,7 +244,10 @@ async function main() {
         "3:12",
         1973,
         ["Roots Reggae"],
-        "placeholder lyrics");
+        `Oh clap your hands all ye people
+        Shout unto God with the voice of triumph
+        For the Lord Most High is terrible
+        And He's a great king over all the earth`);
 
     const computer_World = await songs.createSong(
         "Computer World",
@@ -199,7 +256,10 @@ async function main() {
         "5:05",
         1981,
         ["Electronic", "Synth-Pop"],
-        "placeholder lyrics");
+        `Interpol and Deutsche Bank
+        FBI and Scotland Yard
+        Interpol and Deutsche Bank
+        FBI and Scotland Yard`);
 
     const pocketCalculator = await songs.createSong(
         "Computer World",
@@ -208,7 +268,10 @@ async function main() {
         "4:55",
         1981,
         ["Electronic", "Synth-Pop"],
-        "placeholder lyrics");
+        `I am adding
+        And subtracting
+        I'm controlling
+        And composing`);
 
     const numbers = await songs.createSong(
         "Computer World",
@@ -217,7 +280,10 @@ async function main() {
         "3:19",
         1981,
         ["Electronic", "Synth-Pop"],
-        "placeholder lyrics");
+        `Eins, zwei, drei, vier
+        Fünf, sechs, sieben, acht
+        Eins, zwei, drei, vier
+        Fünf, sechs, sieben, acht`);
 
     const computerWorld2 = await songs.createSong(
         "Computer World",
@@ -226,7 +292,10 @@ async function main() {
         "3:23",
         1981,
         ["Electronic", "Synth-Pop"],
-        "placeholder lyrics");
+        `Eins zwei drei vier fünf sechs sieben acht
+        Eins zwei drei vier fünf sechs sieben acht
+        Eins zwei drei vier fünf sechs sieben acht
+        Eins zwei drei vier fünf sechs sieben acht`);
 
     const homeComputer = await songs.createSong(
         "Computer World",
@@ -235,7 +304,10 @@ async function main() {
         "6:19",
         1981,
         ["Electronic", "Synth-Pop"],
-        "placeholder lyrics");
+        `It's more fun to compute
+        It's more fun to compute
+        It's more fun to compute
+        It's more fun to compute`);
 
     const itsMoreFunToCompute = await songs.createSong(
         "Computer World",
@@ -244,7 +316,8 @@ async function main() {
         "6:19",
         1981,
         ["Electronic", "Synth-Pop"],
-        "placeholder lyrics");
+        `It's more fun to compute
+        It's more fun to compute`);
 
     const surfsUp = await albums.createAlbum(
         "Surf's Up",
