@@ -3,14 +3,11 @@ const songs = require("./songs");
 const search = require("./search");
 const playlist = require("./playlist");
 const albums = require("./albums");
-const topMusic = require("./topMusic");
 
 const constructorMethod = (app) => {
   app.use("/auth", auth);
 
   app.use("/song", songs);
-
-  app.use("/top-songs", topMusic);
 
   app.use("/album", albums);
 
@@ -25,7 +22,7 @@ const constructorMethod = (app) => {
   );
 
   app.use("*", (req, res) => {
-    res.sendStatus(404);
+    res.render('404');
   });
 };
 
