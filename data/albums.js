@@ -139,16 +139,16 @@ let exportedMethods = {
     return albums;
   },
 
-  async addReviewToAlbum(albumId, userId, review) {
+  async addReviewToAlbum(albumId, userId, reviewId) {
     if (!albumId) throw new UserError("You must provide an album id");
     if (!userId) throw new UserError("You must provide a user id");
-    if (!review || typeof review !== "string")
-      throw new UserError("You must provide a review");
+    if (!reviewId || typeof reviewId !== "string") throw new UserError("You must provide a review");
 
     const albumCollection = await albumsDatabase();
     const userCollection = await usersDatabase();
     const parsedAlbumId = new ObjectId(albumId);
     const parsedUserId = new ObjectId(userId);
+    const parsedReviewId = new ObjectId(reviewId);
 
     const album = await albumCollection.findOne({
       _id: parsedAlbumId,
@@ -160,21 +160,17 @@ let exportedMethods = {
     });
     if (user === null) throw new UserError("No user with that id");
 
-    const newReview = {
-      userId: userId,
-      review: review,
-    };
-
     const updatedInfo = await albumCollection.updateOne(
       {
         _id: parsedAlbumId,
       },
       {
         $push: {
-          reviews: newReview,
+          reviews: parsedReviewId,
         },
       }
     );
+
     if (updatedInfo.modifiedCount === 0) throw new UserError("Could not add review to album");
 
     const updatedAlbum = await this.getAlbumById(albumId);
