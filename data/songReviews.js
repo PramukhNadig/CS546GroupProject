@@ -62,7 +62,7 @@ async function createSongReview(title, userID, songID, name, rating, comment) {
     _id: new ObjectId(userID),
   });
   if (user === null) throw new UserError("No user with that id");
-  const userSongReviews = user.songReviews;
+  const userSongReviews = user.songReviews || [];
   // console.log(userSongReviews)
   userSongReviews.push(newId);
   const updateInfo = await usersCollection.updateOne(

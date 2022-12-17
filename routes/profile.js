@@ -23,12 +23,11 @@ router.route("/:username").get(async (req, res) => {
   const albRev = await albumReviews.getAlbumReviewsByUserId(userData._id);
   let songReviewsList = rev
     ? await Promise.all(
-        rev?.map(async (reviewId) => {
-          const songReview = await songReviews.getSongReviewById(reviewId);
-          const songName = await songs.getSongById(songReview.songID);
+        rev?.map(async (review) => {
+          const songName = await songs.getSongById(review.songID);
           return {
+            ...review,
             songName: songName.title,
-            ...songReview,
           };
         })
       )
@@ -36,12 +35,11 @@ router.route("/:username").get(async (req, res) => {
 
   let albumReviewsList = albRev
     ? await Promise.all(
-        albRev?.map(async (reviewId) => {
-          const albumReview = await albumReviews.getAlbumReviewById(reviewId);
-          const albumName = await albums.getAlbumById(albumReview.albumID);
+        albRev?.map(async (review) => {
+          const albumName = await albums.getAlbumById(review.albumID);
           return {
+            ...review,
             albumName: albumName.title,
-            ...albumReview,
           };
         })
       )
