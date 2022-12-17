@@ -210,30 +210,7 @@ const getUserByID = async (id) => {
   return user;
 };
 
-const getUserFriends = async (username) => {
-  if (!username || typeof username !== "string")
-    throw new UserError("Username must be provided");
 
-  username = username?.toLowerCase();
-  try {
-    validateUsername(username);
-    const userCollection = await users();
-    const user = userCollection.findOne({
-      username: username,
-    }, {
-      $pull: {
-        favoriteAlbums: albumId,
-      },
-    });
-
-    if (!updatedUser) throw new UserError("Could not update user");
-    return {
-      updatedUser: true
-    };
-  } catch (e) {
-    throw new UserError("There is no user with that username");
-  }
-};
 
 const getUserFriends = async (username) => {
   if (!username || typeof username !== "string")
