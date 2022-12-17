@@ -5,7 +5,7 @@
     <div class="friends">
         {{#each friends}}
         <div class="friend">
-            <h2><a href= "/profile">{{this}}</a></h2>
+            <h2><a href= "/profile/{{this.id}}">{{this.username}}</a></h2>
         </div>
         {{/each}}
     </div>

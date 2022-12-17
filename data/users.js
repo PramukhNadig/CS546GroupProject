@@ -207,21 +207,22 @@ const getUserByID = async (id) => {
     _id: new ObjectId(id),
   });
 
-  delete user.password;
-
   return user;
 };
+
+
 
 const getUserFriends = async (username) => {
   if (!username || typeof username !== "string")
     throw new UserError("Username must be provided");
-
+  
   username = username?.toLowerCase();
   try {
     validateUsername(username);
-    const userCollection = await users();
-    const user = userCollection.findOne({
-      username: username,
+  const userCollection = await users();
+    const user = await userCollection.findOne({
+      username: username
+
     });
     if (!user) throw new UserError("There is no user with that username");
     const friends = user.friends;

@@ -20,6 +20,65 @@ const handleError = async (error, res) => {
     title: "Error",
   });
 };
+router.route("/create").get(
+    async (req, res) => {
+        try {
+            if (!req.session ?.user)
+                return res.redirect(
+                    "/auth/login?next=" + encodeURIComponent(req.originalUrl)
+                );
+
+            const user = req.session ?.user;
+            const admin = user ? await users.checkAdmin(user.username) : false;
+            if (!admin) {
+                return res.status(403).render("forbiddenAccess", {
+                    message: "You are not authorized to perform this action"
+                });
+            }
+            res.status(200).render("createAlbum", {
+                user: user ? user : "User not found",
+                admin: admin
+            });
+        } catch (e) {
+            return handleError(e, res);
+        }
+    }
+
+).post(async (req, res) => {
+    try {
+        if (!req.session ?.user)
+            return res.redirect(
+                "/auth/login?next=" + encodeURIComponent(req.originalUrl)
+            );
+
+        const user = req.session ?.user;
+        const admin = user ? await users.checkAdmin(user.username) : false;
+        if (!admin) {
+            return res.status(403).render("forbiddenAccess", {
+                message: "You are not authorized to perform this action"
+            });
+        }
+
+        console.log(req.body);
+        console.log(req.body.newAlbumGenreInput.split(","))
+        const newAlbum = await albums.createAlbum(
+            req.body.newAlbumTitleInput.trim(),
+            req.body.newAlbumArtistInput.trim(),
+            req.body.newAlbumLengthInput.trim(),
+            Number(req.body.newAlbumReleaseYearInput.trim()),
+            req.body.newAlbumGenreInput,
+            []
+        );
+
+
+        const newAlbumId = newAlbum._id.toString();
+        console.log("New album created with id: " + newAlbumId);
+        res.redirect("/album/" + newAlbumId);
+    } catch (e) {
+        return handleError(e, res);
+    }
+});
+
 
 router
   .route("/:id")
@@ -170,5 +229,6 @@ router.route("/:id/addSong").post(async (req, res) => {
     return handleError(e, res);
   }
 });
+
 
 module.exports = router;

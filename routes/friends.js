@@ -23,13 +23,26 @@ const handleError = async (error, res) => {
 };
 
 router.route("/").get(async (req, res) => {
-  const user = req.session?.user;
-  if (!user) {
-    return res.redirect("/auth/login");
-  }
-  res.status(200).render("friends", {
-    user: req.session?.user,
-    friends: await users.getUserFriends(req.session?.user),
-    title: "Friends",
-  });
-});
+    const user = req.session?.user;
+    if (!user) {
+        return res.redirect("/auth/login");
+    }
+    let friendsList = [];
+    let n = await users.getUserFriends(user.username)
+    for (let i = 0; i < n.length; i++) {
+        let friend = await users.getUserByID(n[i]);
+        friendsList.push({
+            username: friend.username,
+            id: friend._id
+
+        });
+    }
+
+        res.status(200).render("friends", {
+            user: req.session?.user,
+            friends: friendsList.length > 0 ? friendsList : false
+        });
+    });
+
+module.exports = router;
+
