@@ -156,7 +156,7 @@ const searchSongs = async (searchTerm) => {
 
   //Yes, I wrote this line. No, I don't care.
   const filteredSongs = allSongs.filter((song) =>
-    song.title.toLowerCase().includes(searchTerm.toLowerCase()) || song.genres.map(element => {return element.toLowerCase()}).includes(searchTerm.toLowerCase())
+    song.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return filteredSongs;

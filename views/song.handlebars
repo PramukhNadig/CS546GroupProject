@@ -1,5 +1,13 @@
 <div class="container py-4">
     {{{body}}}
+    <div class="song-details">
+        <h2>{{song.title}}</h2>
+        <p>Artist:     {{song.artist}}</p>
+        <p>Album Name: {{song.album}}</p>
+        <p>Genre(s):   {{song.genres}}</p>
+        <p>Released:   {{song.releaseYear}}</p>
+        <p>Lyrics:     {{song.lyrics}}</p>
+    </div>
     <h1>{{song.title}}</h1>
     <div class="mb-3 playlist-section">
         {{#each playlists}}

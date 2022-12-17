@@ -13,6 +13,7 @@ const constructorMethod = (app) => {
 
   app.use("/search", search);
 
+
   app.use("/playlists", playlist);
   app.get("/", (req, res) =>
     res.render("home", {
