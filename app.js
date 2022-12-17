@@ -44,7 +44,7 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  console.log(
+  console.info(
     `[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (${
       // @ts-ignore
       req.session?.user ? "Authenticated User" : "Non-Authenticated User"

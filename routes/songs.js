@@ -13,17 +13,18 @@ const handleError = async (error, res) => {
   if (!!error?._status) {
     return res
       .status(error._status)
-      .render("forbiddenAccess", { message: error.message });
+      .render("forbiddenAccess", { message: error.message, title: "Error" });
   }
   console.error("Unhandled exception occured");
   console.error(error);
-  return res
-    .status(500)
-    .render("forbiddenAccess", { message: "Internal server error" });
+  return res.status(500).render("forbiddenAccess", {
+    message: "Internal server error",
+    title: "Error",
+  });
 };
 
 router.route("/").get(async (req, res) => {
-  res.render("search");
+  res.redirect("/search");
 });
 
 router.route("/:id/playlists").post(async (req, res) => {
@@ -35,7 +36,7 @@ router.route("/:id/playlists").post(async (req, res) => {
   const body = req.body;
   let batch = body?.playlist || [];
 
-  if (typeof batch == "string") batch = [playlists];
+  if (typeof batch == "string") batch = [batch];
 
   const results = await Promise.all(
     batch.map((playlist) =>
@@ -57,7 +58,9 @@ router
       const user = req.session?.user;
       const songReviews = await reviews.getSongReviewBySongId(req.params.id);
 
-      const userPlaylists = await playlists.getPlaylistsByUserId(user.id);
+      const userPlaylists = user
+        ? await playlists.getPlaylistsByUserId(user.id)
+        : [];
 
       // playlists this song is in
       const relevantPlaylists = userPlaylists.filter((playlist) =>
@@ -74,11 +77,12 @@ router
 
       res.status(200).render("song", {
         song: song,
-        user: user ? user : "User not found",
+        user: req?.session?.user,
         songReviews: songReviews,
         hasSongReviews: songReviews.length > 0 ? true : false,
         playlists: relevantPlaylists,
         allUserPlaylists: otherPlaylists,
+        title: song?.title
       });
     } catch (e) {
       return handleError(e, res);
@@ -119,9 +123,10 @@ router
 
       res.status(200).render("song", {
         song: song,
-        user: user ? user : "User not found",
+        user: req?.session?.user,
         songReviews: songReviews,
         hasSongReviews: songReviews.length > 0 ? true : false,
+        title: song?.title,
       });
     } catch (e) {
       return handleError(e, res);

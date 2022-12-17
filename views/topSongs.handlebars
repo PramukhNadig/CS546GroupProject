@@ -1,0 +1,27 @@
+<div class="container py-4">
+    <h1>Top-rated songs</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Song</th>
+                <th>Artist</th>
+                <th>Album</th>
+                <th>Avg Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each topSongs}}
+            <tr>
+                <td><a href="/song/{{_id}}">{{title}}</a></td>
+                <td>{{artist}}</td>
+                <td>{{album}}</td>
+                <td>{{averageRating}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+
+
+</div>

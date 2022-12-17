@@ -12,13 +12,13 @@ const handleError = async (error, res) => {
   if (!!error?._status) {
     return res
       .status(error._status)
-      .render("forbiddenAccess", { message: error.message });
+      .render("forbiddenAccess", { message: error.message, title: "Error" });
   }
   console.error("Unhandled exception occured");
   console.error(error);
   return res
     .status(500)
-    .render("forbiddenAccess", { message: "Internal server error" });
+    .render("forbiddenAccess", { message: "Internal server error", title: "Error" });
 };
 
 router.route("/create").post(async (req, res) => {
@@ -71,7 +71,7 @@ router.route("/:id").get(async (req, res) => {
     const playlist = await playlists.getPlaylistById(req.params.id);
     const user = req.session?.user;
     // check if the user is the owner of the playlist
-    const isOwner = user.id === playlist.UserID;
+    const isOwner = user ? user.id === playlist.UserID : false;
 
     const Songs = await Promise.all(
       playlist.Songs?.map(async (songId) => await songs.getSongById(songId))
