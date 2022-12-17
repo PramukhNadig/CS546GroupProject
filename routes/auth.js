@@ -66,7 +66,7 @@ router
       // run createUser
       const resp = await users.createUser(usernameInput, passwordInput);
 
-      if (!resp?.userInserted) {
+      if (!resp) {
         throw new Error("Could not insert user or did not return userInserted");
       }
 
