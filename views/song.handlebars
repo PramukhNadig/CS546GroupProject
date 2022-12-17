@@ -1,14 +1,7 @@
 <div class="container py-4">
     {{{body}}}
-    <div class="song-details">
-        <h2>{{song.title}}</h2>
-        <p>Artist:     {{song.artist}}</p>
-        <p>Album Name: {{song.album}}</p>
-        <p>Genre(s):   {{song.genres}}</p>
-        <p>Released:   {{song.releaseYear}}</p>
-        <p>Lyrics:     {{song.lyrics}}</p>
-    </div>
     <h1>{{song.title}}</h1>
+    {{#if user}}
     <div class="mb-3 playlist-section">
         {{#each playlists}}
         <a href="/playlists/{{_id}}"><span class="badge bg-dark">{{PlaylistName}}</span></a>
@@ -17,6 +10,7 @@
         <a data-bs-target="#addToPlaylists" data-bs-toggle="modal" href="#"><span
                 class="badge bg-light text-dark">+</span></a>
     </div>
+    {{/if}}
 
     <div class="row">
         <div class="col song-details">
@@ -88,7 +82,11 @@
                             <textarea class="form-control" type="text" id="newReviewCommentInput"
                                 name="newReviewCommentInput" placeholder="Your review"></textarea>
                         </div>
+                        {{#if user}}
                         <button class="btn btn-primary" type="submit">Create Review</button>
+                        {{else}}
+                        <button class="btn btn-primary" type="submit" disabled>Create Review</button>
+                        {{/if}}
                     </form>
                 </div>
                 <div id="error" class="error" hidden>Error:</div>
