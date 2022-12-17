@@ -1,0 +1,10 @@
+<div class="container py-4">
+    {{{body}}}
+    <h1>{{playlist.PlaylistName}}</h1>
+
+        <ul>
+            {{#each playlist.Songs}}
+            <li><a href="/song/{{_id}}">{{artist}} - {{title}}</li>
+            {{/each}}
+        </ul>
+</div>
