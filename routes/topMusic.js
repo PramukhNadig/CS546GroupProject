@@ -37,7 +37,7 @@ router.route("/").get(async (req, res) => {
       const songReviewsWithUser = await Promise.all(
         songReviews.map(async (review) => {
           // memoize if we have the same user a bunch of times
-          const uid = review.userID.toString()
+          const uid = review.userID.toString();
           if (lookupUser[uid]) {
             review.user = lookupUser[uid];
             return review;
@@ -49,11 +49,23 @@ router.route("/").get(async (req, res) => {
         })
       );
       song.reviews = songReviewsWithUser;
+      song.averageRating =
+        songReviewsWithUser.reduce((acc, cur) => acc + cur.rating, 0) /
+          songReviewsWithUser.length || -1;
       return song;
     })
   );
 
-  res.json({ allSongsWithReviews });
+  const topSongs = allSongsWithReviews
+    .filter(({ averageRating }) => averageRating >= 0)
+    .sort((a, b) => b.averageRating - a.averageRating);
+
+  //   res.json({ topSongs });
+  res.render("topSongs", {
+    title: "Top Songs",
+    topSongs,
+    user: req.session?.user,
+  });
 });
 
 module.exports = router;
