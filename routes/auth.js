@@ -12,7 +12,7 @@ const renderLogin = (req, res, error) =>
     title: "Log in",
     target: "/auth/login",
     error,
-    user: req?.session?.user,
+    user: req?.session?.user
   });
 
 const renderRegister = (req, res, error) =>
@@ -29,13 +29,13 @@ const handleError = async (error, res) => {
   if (!!error?._status) {
     return res
       .status(error._status)
-      .render("forbiddenAccess", { message: error.message });
+      .render("forbiddenAccess", { message: error.message, title: "Error" });
   }
   console.error("Unhandled exception occured");
   console.error(error);
   return res
     .status(500)
-    .render("forbiddenAccess", { message: "Internal server error" });
+    .render("forbiddenAccess", { message: "Internal server error", title: "Error" });
 };
 
 router.route("/").get(async (req, res) => {
