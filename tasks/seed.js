@@ -3,10 +3,10 @@ const data = require('../data/');
 const songs = data.songs;
 const albums = data.albums;
 const reviews = data.songReviews;
+const users = data.users;
+const playlists = data.playlists;
 
-const {
-    ObjectId
-} = require('mongodb');
+const { ObjectId } = require('mongodb');
 
 async function main() {
     const db = await dbConnection.dbConnection();
@@ -277,6 +277,12 @@ async function main() {
         [computer_World._id, pocketCalculator._id, numbers._id,
         computerWorld2._id, homeComputer._id, itsMoreFunToCompute._id
         ]);
+
+    const theMan = await users.createUser('theMan', 'iAmTheMan123!');
+
+    const theMansPlaylist = await playlists.createPlaylist("The Man's Playlist",
+    [computer_World._id, peaceAndHarmony._id, aDayInTheLifeOfATree._id, tilIDie._id],
+    theMan._id);
 
     console.log('Done seeding database');
 
