@@ -87,7 +87,7 @@ const checkUser = async (username, password) => {
   };
 };
 
-const makeAdmin = async (username) => {
+const makeAdmin = async (username, adminFlag) => {
   if (!username || typeof username !== "string")
     throw new UserError("Username must be provided");
   username = username?.toLowerCase();
@@ -97,14 +97,14 @@ const makeAdmin = async (username) => {
     username: username
   }, {
     $set: {
-      adminFlag: true
+      adminFlag: adminFlag
     }
   });
 
   if (!updatedInfo?.acknowledged) throw new Error("Could not make user admin");
 
   return {
-    adminFlag: true
+    adminFlag: adminFlag
   }
 };
 
@@ -122,73 +122,6 @@ const checkAdmin = async (username) => {
   if (!user) throw new UserError("There is no user with that username");
 
   return user.adminFlag
-  
-};
-
-const favoriteSong = async (username, songId) => {
-  if (!username || typeof username !== "string")
-    throw new UserError("Username must be provided");
-  if (!songId || typeof songId !== "string")
-    throw new UserError("Song ID must be provided");
-  
-  const song = await songs.getSongById(songId);
-  if (!song) throw new UserError("There is no song with that ID");
-
-  username = username?.toLowerCase();
-  try {
-    validateUsername(username);
-    const userCollection = await users();
-    const user = userCollection.findOne({
-      username: username
-    });
-    if (!user) throw new UserError("There is no user with that username");
-    const updatedUser = await users.updateOne({
-      username: username,
-    }, {
-      $push: {
-        favoriteSongs: songId,
-      },
-    });
-    if (!updatedUser) throw new UserError("Could not update user");
-    return {
-      updatedUser: true
-    };
-  } catch (e) {
-    throw new UserError("There is no user with that username");
-  }
-};
-
-const favoriteAlbum = async (username, albumId) => {
-  if (!username || typeof username !== "string")
-    throw new UserError("Username must be provided");
-  if (!albumId || typeof albumId !== "string")
-    throw new UserError("Album ID must be provided");
-  
-  const album = await albums.getAlbumById(albumId);
-  if (!album) throw new UserError("There is no album with that ID");
-  
-  username = username?.toLowerCase();
-  try {
-    validateUsername(username);
-    const userCollection = await users();
-    const user = userCollection.findOne({
-      username: username
-    });
-    if (!user) throw new UserError("There is no user with that username");
-    const updatedUser = await users.updateOne({
-      username: username,
-    }, {
-      $push: {
-        favoriteAlbums: albumId,
-      },
-    });
-    if (!updatedUser) throw new UserError("Could not update user");
-    return {
-      updatedUser: true
-    };
-  } catch (e) {
-    throw new UserError("There is no user with that username");
-  }
 };
 
 const addFriend = async (username, friendUsername) => {
@@ -200,7 +133,6 @@ const addFriend = async (username, friendUsername) => {
   const user = await userCollection.findOne({
     username: username
   });
-
 
   if (!user) throw new UserError("There is no user with that username");
 
@@ -369,14 +301,11 @@ module.exports = {
   getUserByUsername,
   makeAdmin,
   checkAdmin,
-  favoriteSong,
-  favoriteAlbum,
   addFriend,
   removeFriend,
   removeFavoriteSong,
   removeFavoriteAlbum,
   getUserFriends,
   getUserByID,
-
 };
 
