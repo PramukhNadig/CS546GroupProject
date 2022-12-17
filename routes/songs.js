@@ -57,7 +57,7 @@ router
       const user = req.session?.user;
       const songReviews = await reviews.getSongReviewBySongId(req.params.id);
 
-      const userPlaylists = await playlists.getPlaylistsByUserId(user.id);
+      const userPlaylists = user ? await playlists.getPlaylistsByUserId(user.id) : [];
 
       // playlists this song is in
       const relevantPlaylists = userPlaylists.filter((playlist) =>
