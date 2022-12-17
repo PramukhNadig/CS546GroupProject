@@ -83,28 +83,25 @@ const checkUser = async (username, password) => {
   };
 };
 
-const makeAdmin = async (username) => {
+const makeAdmin = async (username, adminFlag) => {
   if (!username || typeof username !== "string")
     throw new UserError("Username must be provided");
   username = username?.toLowerCase();
   const userCollection = await users();
 
-  const updatedInfo = await userCollection.updateOne(
-    {
-      username: username,
-    },
-    {
-      $set: {
-        adminFlag: true,
-      },
+  const updatedInfo = await userCollection.updateOne({
+    username: username
+  }, {
+    $set: {
+      adminFlag: adminFlag
     }
-  );
+  });
 
   if (!updatedInfo?.acknowledged) throw new Error("Could not make user admin");
 
   return {
-    adminFlag: true,
-  };
+    adminFlag: adminFlag
+  }
 };
 
 const checkAdmin = async (username) => {
@@ -119,7 +116,7 @@ const checkAdmin = async (username) => {
 
   if (!user) throw new UserError("There is no user with that username");
 
-  return user.adminFlag;
+  return user.adminFlag
 };
 
 const addFriend = async (username, friendUsername) => {

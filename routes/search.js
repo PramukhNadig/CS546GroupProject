@@ -19,6 +19,7 @@ const handleError = async (error, res) => {
     .render("forbiddenAccess", {
       message: "Internal server error",
       title: "Error",
+      user: req?.session?.user,
     });
 };
 
@@ -39,7 +40,7 @@ router.route("/").get(async (req, res) => {
       albums: _albums,
       artists: _artists,
       title: "Search",
-      user: req?.query?.user,
+      user: req?.session?.user,
     });
   } catch (e) {
     console.error(e);

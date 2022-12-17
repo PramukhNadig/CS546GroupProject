@@ -123,7 +123,7 @@ router
 
       res.status(200).render("song", {
         song: song,
-        user: req?.query?.user,
+        user: req?.session?.user,
         songReviews: songReviews,
         hasSongReviews: songReviews.length > 0 ? true : false,
         title: song?.title,
