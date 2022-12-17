@@ -1,18 +1,25 @@
 <div class="container py-4">
     {{{body}}}
-    <div class="song-details">
-        <h2>{{song.title}}</h2>
-        <p>Artist:     {{song.artist}}</p>
-        <p>Album Name: {{song.album}}</p>
-        <p>Genre(s):   {{song.genres}}</p>
-        <p>Released:   {{song.releaseYear}}</p>
-        <p>Lyrics:     {{song.lyrics}}</p>
+    <div class="album-details">
+        <h2>{{album.title}}</h2>
+        <p>Artist:     {{album.artist}}</p>
+        <p>Genre(s):   {{album.genre}}</p>
+        <p>Released:   {{album.releaseYear}}</p>
+    </div>
+
+    <div class="album-song-details">
+        <h2>Songs</h2>
+        {{#each songs}}
+            <div class="song">
+                <h4><a href="../song/{{_id}}">{{title}}</a></h4>
+            </div>
+        {{/each}}
     </div>
 
     <div id="addReview">
         <h2>Add Review</h2>
         <div id="addReviewDetails">
-            <form method="POST" action="/song/{{song.id}}" id="newReview">
+            <form method="POST" action="/album/{{album.id}}" id="newReview">
                 <label for="newReviewUsernameInput" id="newReviewUsernameTitle">Username:</label>
                 <input type="text" id="newReviewUsernameInput" name="newReviewUsernameInput" value="{{user.username}}" readonly> <br>
 
@@ -32,9 +39,9 @@
     </div>
 
     <h1>Reviews</h1>
-    {{#if hasSongReviews}}
+    {{#if hasAlbumReviews}}
         <div class="reviews">
-            {{#each songReviews}}
+            {{#each albumReviews}}
                 <div class="review">
                     <!-- put the name on the top left, the title below the name and the rating on the right of the comment-->
                     <h2>{{name}}</h2>
