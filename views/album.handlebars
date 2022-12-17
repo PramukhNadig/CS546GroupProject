@@ -31,7 +31,11 @@
                 <label for="newReviewCommentInput" id="newReviewCommentLabel">Comment:</label>
                 <input type="text" id="newReviewCommentInput" name="newReviewCommentInput"> <br>
 
-                <button type="submit">Create Review</button>
+                {{#if user}}
+                <button class="btn btn-primary" type="submit">Create Review</button>
+                {{else}}
+                <button class="btn btn-primary" type="submit" disabled>Create Review</button>
+                {{/if}}
             </form>
         </div>
         <div id="error" class="error" hidden>Error:</div>
