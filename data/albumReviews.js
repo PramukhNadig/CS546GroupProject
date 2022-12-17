@@ -25,7 +25,6 @@ async function createAlbumReview(
   rating,
   comment
 ) {
-  
   if (!albumID) throw new UserError("You must provide an album id");
   if (!title) throw new UserError("You must provide a title");
   if (!userID) throw new UserError("You must provide a user id");
@@ -48,9 +47,9 @@ async function createAlbumReview(
   const albumReviewsCollection = await albumReviews();
 
   let newAlbumReview = {
-    albumID: new ObjectId(albumID),
+    albumID: ObjectId(albumID),
     title: title,
-    userID: new ObjectId(userID),
+    userID: ObjectId(userID),
     name: name,
     rating: rating,
     comment: comment,

@@ -35,7 +35,6 @@ router.route("/:id").get(async (req, res) => {
         for (let i = 0; i < albumSongs.length; i++) {
             songList[i] = await songs.getSongById(albumSongs[i]);
         }
-        console.log(user.username)
         const admin = user ? await users.checkAdmin(user.username) : false;
         res.status(200).render("album", {
             album: album,

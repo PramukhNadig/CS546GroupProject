@@ -117,11 +117,12 @@ const checkAdmin = async (username) => {
     username: username
   });
 
+  console.log(user);
+
   if (!user) throw new UserError("There is no user with that username");
 
-  return {
-    adminFlag: user.adminFlag
-  }
+  return user.adminFlag
+  
 };
 
 const favoriteSong = async (username, songId) => {
