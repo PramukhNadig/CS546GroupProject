@@ -1,0 +1,9 @@
+<div class="container py-4">
+    <h1>Explore Playlists</h1>
+
+    <ul>
+        {{#each playlists}}
+        <li><a href="/playlists/{{_id}}">{{PlaylistName}} by {{owner.username}}</li>
+        {{/each}}
+    </ul>
+</div>

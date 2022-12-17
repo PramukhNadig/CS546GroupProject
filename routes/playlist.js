@@ -2,9 +2,7 @@ const express = require("express");
 const router = express.Router();
 const data = require("../data");
 const songs = data.songs;
-const reviews = data.songReviews;
 const users = data.users;
-const userHelper = require("../helpers/userHelper");
 const playlists = data.playlists;
 
 const { UserError } = require("../helpers/userHelper");
@@ -22,6 +20,27 @@ const handleError = async (error, res) => {
     .status(500)
     .render("forbiddenAccess", { message: "Internal server error" });
 };
+
+router.route("/").get(async (req, res) => {
+  try {
+    // get all playlists
+    const allPlaylists = await playlists.getAllPlaylists();
+
+    const plist = await Promise.all(
+      allPlaylists.map(async (playlist) => ({
+        ...playlist,
+        owner: await users.getUserByID(playlist.UserID.toString()),
+      }))
+    );
+
+    res.render("playlists", {
+      title: "Playlists",
+      playlists: plist,
+    });
+  } catch (e) {
+    return handleError(e, res);
+  }
+});
 
 router.route("/:id").get(async (req, res) => {
   try {
