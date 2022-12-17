@@ -39,7 +39,7 @@ router.route("/:username").get(async (req, res) => {
           const albumName = await albums.getAlbumById(review.albumID);
           return {
             ...review,
-            albumName: albumName.title,
+            albumName: albumName.title, 
           };
         })
       )
