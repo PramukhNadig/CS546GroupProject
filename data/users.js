@@ -51,9 +51,10 @@ const createUser = async (username, password) => {
 
   if (!insertInfo?.acknowledged) throw new Error("Could not add user");
 
-  return {
-    userInserted: true,
-  };
+  const newId = insertInfo.insertedId;
+
+  newUser._user = newId;
+  return newUser;
 };
 
 const checkUser = async (username, password) => {
