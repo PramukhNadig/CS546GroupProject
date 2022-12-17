@@ -21,6 +21,29 @@ const handleError = async (error, res) => {
     .render("forbiddenAccess", { message: "Internal server error" });
 };
 
+router.route("/create").post(async (req, res) => {
+  try {
+    const user = req.session?.user;
+
+    if (!user) {
+      throw new UserError("You must be logged in to create a playlist");
+    }
+
+    if (!req.body.newPlaylistNameInput) {
+      throw new UserError("Playlist name cannot be empty");
+    }
+
+    const newPlaylist = await playlists.createPlaylist(
+      req.body.newPlaylistNameInput,
+      [],
+      user.id
+    );
+    res.redirect("/playlists");
+  } catch (e) {
+    return handleError(e, res);
+  }
+});
+
 router.route("/").get(async (req, res) => {
   try {
     // get all playlists
@@ -36,6 +59,7 @@ router.route("/").get(async (req, res) => {
     res.render("playlists", {
       title: "Playlists",
       playlists: plist,
+      user: req.session?.user,
     });
   } catch (e) {
     return handleError(e, res);
@@ -73,6 +97,7 @@ router.route("/:id").get(async (req, res) => {
       playlist: newPlaylist,
       title: newTitle,
       isOwner,
+      user: req.session?.user,
     });
   } catch (e) {
     return handleError(e, res);

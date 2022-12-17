@@ -14,7 +14,7 @@ const constructorMethod = (app) => {
   app.get("/", (req, res) =>
     res.render("home", {
       title: "Home",
-      user: req.session?.["user"]
+      user: req.session?.["user"],
     })
   );
 

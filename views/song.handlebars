@@ -1,70 +1,92 @@
 <div class="container py-4">
     {{{body}}}
     <h1>{{song.title}}</h1>
-        <div class="mb-3 playlist-section">
-            {{#each playlists}}
-            <a href="/playlists/{{_id}}"><span class="badge bg-dark">{{PlaylistName}}</span></a>
-            {{/each}}
+    <div class="mb-3 playlist-section">
+        {{#each playlists}}
+        <a href="/playlists/{{_id}}"><span class="badge bg-dark">{{PlaylistName}}</span></a>
+        {{/each}}
 
-            <a data-bs-target="#addToPlaylists" data-bs-toggle="modal" href="#"><span
-                    class="badge bg-light text-dark">+</span></a>
-        </div>
+        <a data-bs-target="#addToPlaylists" data-bs-toggle="modal" href="#"><span
+                class="badge bg-light text-dark">+</span></a>
+    </div>
 
-        <div class="song-details">
+    <div class="row">
+        <div class="col song-details">
             <p>Artist: {{song.artist}}</p>
             <p>Album Name: {{song.album}}</p>
             <p>Genre(s): {{song.genre}}</p>
             <p>Released: {{song.releaseDate}}</p>
             <p>Lyrics: {{song.lyrics}}</p>
         </div>
-        <div class="row">
-            <div class="col">
-                {{#if hasSongReviews}}
-                <div class="accordion" id="reviews">
-                    {{#each songReviews}}
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="review-{{name}}-{{rating}}">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                aria-expanded="true" aria-controls="review-{{name}}-{{rating}}">
-                                @{{name}}: {{title}} ({{rating}})
-                            </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse show"
-                            aria-labelledby="#review-{{name}}-{{rating}}" data-bs-parent="#reviews">
-                            <div class="accordion-body">
-                                {{comment}}
-                            </div>
+        <div class="col">
+            <div class="accordion" id="lyrics">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="lyricsHeading">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseLyrics" aria-expanded="true" aria-controls="collapseLyrics">
+                            Lyrics
+                        </button>
+                    </h2>
+                    <div id="collapseLyrics" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                        data-bs-parent="#lyrics">
+                        <div class="accordion-body">
+                            <code>{{song.lyrics}}</code>
                         </div>
                     </div>
-                    {{/each}}
-                    {{/if}}
                 </div>
             </div>
 
-            <div class="col">
-                <div id="addReview">
-                    <h4>What do you think?</h4>
-                    <div id="addReviewDetails">
-                        <form method="POST" action="/song/{{song.id}}" id="newReview">
-                            <div class="mb-3">
-                                <label for="newReviewRatingInput" id="newReviewRatingLabel">Rating (Optional)</label>
-                                <input type="range" id="newReviewRatingInput" name="newReviewRatingInput" min=1 max=5>
-                            </div>
-                            <div class="mb-3">
-                                <input type="text" class="form-control" id="newReviewTitleInput"
-                                    placeholder="Review title" name="newReviewTitleInput">
-                            </div>
-                            <div class="mb-3">
-                                <textarea class="form-control" type="text" id="newReviewCommentInput"
-                                    name="newReviewCommentInput" placeholder="Your review"></textarea>
-                            </div>
-                            <button class="btn btn-primary" type="submit">Create Review</button>
-                        </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            {{#if hasSongReviews}}
+            <div class="accordion" id="reviews">
+                {{#each songReviews}}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="review-{{name}}-{{rating}}">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true"
+                            aria-controls="review-{{name}}-{{rating}}">
+                            @{{name}}: {{title}} ({{rating}})
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show"
+                        aria-labelledby="#review-{{name}}-{{rating}}" data-bs-parent="#reviews">
+                        <div class="accordion-body">
+                            {{comment}}
+                        </div>
                     </div>
-                    <div id="error" class="error" hidden>Error:</div>
                 </div>
+                {{/each}}
+                {{/if}}
             </div>
         </div>
+
+        <div class="col">
+            <div id="addReview">
+                <h4>What do you think?</h4>
+                <div id="addReviewDetails">
+                    <form method="POST" action="/song/{{song.id}}" id="newReview">
+                        <div class="mb-3">
+                            <label for="newReviewRatingInput" id="newReviewRatingLabel">Rating (Optional)</label>
+                            <input type="range" id="newReviewRatingInput" name="newReviewRatingInput" min=1 max=5>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="newReviewTitleInput" placeholder="Review title"
+                                name="newReviewTitleInput">
+                        </div>
+                        <div class="mb-3">
+                            <textarea class="form-control" type="text" id="newReviewCommentInput"
+                                name="newReviewCommentInput" placeholder="Your review"></textarea>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Create Review</button>
+                    </form>
+                </div>
+                <div id="error" class="error" hidden>Error:</div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Modal -->
@@ -79,7 +101,8 @@
                 <div class="modal-body">
                     {{#each allUserPlaylists}}
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="playlist" value={{_id}} id="playlist-{{_id}}">
+                        <input class="form-check-input" type="checkbox" name="playlist" value={{_id}}
+                            id="playlist-{{_id}}">
                         <label class="form-check-label" for="playlist-{{_id}}">
                             {{PlaylistName}}
                         </label>
