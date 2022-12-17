@@ -5,6 +5,7 @@ const playlist = require("./playlist");
 const albums = require("./albums");
 const friends = require("./friends");
 const topMusic = require("./topMusic");
+const profile = require("./profile");
 
 const constructorMethod = (app) => {
   app.use("/auth", auth);
@@ -20,6 +21,9 @@ const constructorMethod = (app) => {
   app.use("/friends", friends);
 
   app.use("/playlists", playlist);
+
+  app.use("/profile", profile);
+
   app.get("/", (req, res) =>
     res.render("home", {
       title: "Home",

@@ -1,0 +1,30 @@
+<div class="container py-4">
+  <h1>Your Profile</h1>
+  {{#if user}}
+    <div class="px-4 py-3 mb-4 bg-light rounded-3">
+      <h4 class="text-secondary">Your Playlists</h4>
+      <p>Playlists: {{playlists}}</p>
+      {{!-- <p>Song Reviews: {{songReviews}}</p> --}}
+      {{#each songReviews}}
+        <div>
+          <p>-> Song name: {{this.songName}}</p>
+          <p>Rating: {{this.rating}}</p>
+          <p>Review Title: {{this.title}}</p>
+          <p>Review Comment: {{this.comment}}</p>
+        </div>
+      {{/each}}
+      {{#each albumReviews}}
+        <div>
+          <p>-> Album name: {{this.albumName}}</p>
+          <p>Rating: {{this.rating}}</p>
+          <p>Review Title: {{this.title}}</p>
+          <p>Review Comment: {{this.comment}}</p>
+        </div>
+      {{/each}}
+    </div>
+  {{else}}
+    <p>You aren't logged in. Log in or create an account to see your profile!</p>
+    <a type="button" href="/auth/login" class="btn btn-warning">Log in</a>
+    <a type="button" href="/auth/register" class="btn btn-primary">Register</a>
+  {{/if}}
+</div>

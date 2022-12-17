@@ -11,6 +11,7 @@ comment: String
 
 const mongoCollections = require("../config/mongoCollections");
 const songReviews = mongoCollections.songReviews;
+const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 const { UserError } = require("../helpers/userHelper");
 
@@ -54,6 +55,22 @@ async function createSongReview(title, userID, songID, name, rating, comment) {
     throw new Error("Could not add song review");
 
   const newId = insertInfo.insertedId;
+
+  // Also add song review id to user's songReviews
+  const usersCollection = await users();
+  const user = await usersCollection.findOne({
+    _id: new ObjectId(userID),
+  });
+  if (user === null) throw new UserError("No user with that id");
+  const userSongReviews = user.songReviews;
+  // console.log(userSongReviews)
+  userSongReviews.push(newId);
+  const updateInfo = await usersCollection.updateOne(
+    { _id: new ObjectId(userID) },
+    { $set: { songReviews: userSongReviews } }
+  );
+  if (updateInfo.modifiedCount === 0)
+    throw new Error("Could not add song review to user");
 
   const songReview = await this.getSongReviewById(newId);
   return songReview;

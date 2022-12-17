@@ -12,6 +12,7 @@ comment: String
 
 const mongoCollections = require("../config/mongoCollections");
 const albumReviews = mongoCollections.albumReviews;
+const users = mongoCollections.users;
 const albums = require("./albums");
 const { ObjectId } = require("mongodb");
 
@@ -60,6 +61,21 @@ async function createAlbumReview(
     throw new Error("Could not add album review");
 
   const newId = insertInfo.insertedId;
+
+  // Also add album review id to user's albumReviews
+  const usersCollection = await users();
+  const user = await usersCollection.findOne({
+    _id: ObjectId(userID),
+  });
+  if (user === null) throw new UserError("No user with that id");
+  const userAlbumReviews = user.albumReviews;
+  userAlbumReviews.push(newId);
+  const updateInfo = await usersCollection.updateOne(
+    { _id: ObjectId(userID) },
+    { $set: { albumReviews: userAlbumReviews } }
+  );
+  if (updateInfo.modifiedCount === 0)
+    throw new Error("Could not add album review to user");
 
   const albumReview = await this.getAlbumReviewById(newId);
   return albumReview;

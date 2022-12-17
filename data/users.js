@@ -39,7 +39,12 @@ const createUser = async (username, password) => {
   const newUser = {
     username,
     password: hash,
-    reviews: [],
+    // favoriteSongs: [], // favoriteSongs deprecated, added to a playlist called "favorites" instead
+    // favoriteAlbums: [],
+    playlists: [], // array of playlist ids. "favorites" playlist gets added in playlist.getPlaylistsByUserId
+    // reviews: [], // deprecated, split reviews into songReviews and albumReviews
+    songReviews: [],
+    albumReviews: [],
     friends: [],
     adminFlag: false,
   };
@@ -89,19 +94,22 @@ const makeAdmin = async (username, adminFlag) => {
   username = username?.toLowerCase();
   const userCollection = await users();
 
-  const updatedInfo = await userCollection.updateOne({
-    username: username
-  }, {
-    $set: {
-      adminFlag: adminFlag
+  const updatedInfo = await userCollection.updateOne(
+    {
+      username: username,
+    },
+    {
+      $set: {
+        adminFlag: adminFlag,
+      },
     }
-  });
+  );
 
   if (!updatedInfo?.acknowledged) throw new Error("Could not make user admin");
 
   return {
-    adminFlag: adminFlag
-  }
+    adminFlag: adminFlag,
+  };
 };
 
 const checkAdmin = async (username) => {
@@ -116,7 +124,7 @@ const checkAdmin = async (username) => {
 
   if (!user) throw new UserError("There is no user with that username");
 
-  return user.adminFlag
+  return user.adminFlag;
 };
 
 const addFriend = async (username, friendUsername) => {
@@ -210,19 +218,16 @@ const getUserByID = async (id) => {
   return user;
 };
 
-
-
 const getUserFriends = async (username) => {
   if (!username || typeof username !== "string")
     throw new UserError("Username must be provided");
-  
+
   username = username?.toLowerCase();
   try {
     validateUsername(username);
-  const userCollection = await users();
+    const userCollection = await users();
     const user = await userCollection.findOne({
-      username: username
-
+      username: username,
     });
     if (!user) throw new UserError("There is no user with that username");
     const friends = user.friends;
