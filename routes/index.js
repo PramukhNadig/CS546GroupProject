@@ -1,6 +1,7 @@
 const auth = require("./auth");
 const songs = require("./songs");
 const search = require("./search");
+const playlist = require("./playlist");
 
 const constructorMethod = (app) => {
   app.use("/auth", auth);
@@ -8,6 +9,8 @@ const constructorMethod = (app) => {
   app.use("/song", songs);
 
   app.use("/search", search);
+
+  app.use("/playlists", playlist);
   app.get("/", (req, res) =>
     res.render("home", {
       title: "Home",
