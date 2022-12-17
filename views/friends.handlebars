@@ -1,0 +1,17 @@
+<div class="container py-4">
+    {{body}}
+    <h1>Friends</h1>
+    {{#if friends}}
+    <div class="friends">
+        {{#each friends}}
+        <div class="friend">
+            <h2><a href= "/profile">{{this}}</a></h2>
+        </div>
+        {{/each}}
+    </div>
+    {{else}}
+    <div class="error">
+        <p>No friends found</p>
+    </div>
+    {{/if}}
+</div>

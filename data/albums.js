@@ -1,6 +1,7 @@
 const mongodb = require("mongodb");
 const albumsDatabase = require("../config/mongoCollections").albums;
 const usersDatabase = require("../config/mongoCollections").users;
+const songsDatabase = require("../config/mongoCollections").songs;
 const { ObjectId } = require("mongodb");
 const mongoCollections = require("../config/mongoCollections");
 const { UserError } = require("../helpers/userHelper");
@@ -238,7 +239,42 @@ let exportedMethods = {
     });
 
     return searchedAlbums;
-  },
+    },
+  
+    async addSongToAlbum(albumId, songID) {
+        if (!albumId) throw new UserError("You must provide an album id");
+        if (!songID) throw new UserError("You must provide a song id");
+    
+        const albumCollection = await albumsDatabase();
+        const songCollection = await songsDatabase();
+        const parsedAlbumId = new ObjectId(albumId);
+        const parsedSongId = new ObjectId(songID);
+    
+        const album = await albumCollection.findOne({
+            _id: parsedAlbumId,
+        });
+        if (album === null) throw new Error("No album with that id");
+
+        const song = await songCollection.findOne({
+            _id: parsedSongId,
+        });
+        if (song === null) throw new Error("No song with that id");
+
+        const updatedInfo = await albumCollection.updateOne(
+            {
+                _id: parsedAlbumId,
+            },
+            {
+                $push: {
+                    songs: songID,
+                },
+            }
+        );
+        if (updatedInfo.modifiedCount === 0) throw new Error("Could not add song to album");
+
+        const updatedAlbum = await this.getAlbumById(albumId);
+        return updatedAlbum;
+    },
 };
 
 module.exports = exportedMethods;

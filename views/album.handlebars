@@ -1,0 +1,87 @@
+<div class="container py-4">
+    {{{body}}}
+    <div class="song-details">
+        <h2>{{album.title}}</h2>
+        <p>Artist: {{album.artist}}</p>
+        <p>Genre(s): {{album.genre}}</p>
+        <p>Released: {{album.releaseYear}}</p>
+        {{#if songs}}
+        <h2>Songs</h2>
+        <div class="songs">
+            {{#each songs}}
+            <div class="song">
+                <h2><a href="./song/{{_id}}">{{title}}</a></h2>
+            </div>
+            {{/each}}
+    </div>
+    {{/if}}
+    <div id="addReview">
+        <h2>Add Review</h2>
+        <div id="addReviewDetails">
+            <form method="POST" action="/album/{{album.id}}" id="newReview">
+                <label for="newReviewUsernameInput" id="newReviewUsernameTitle">Username:</label>
+                <input type="text" id="newReviewUsernameInput" name="newReviewUsernameInput" value="{{user.username}}"
+                    readonly> <br>
+
+                <label for="newReviewTitleInput" id="newReviewTitleLabel">Title:</label>
+                <input type="text" id="newReviewTitleInput" name="newReviewTitleInput"> <br>
+
+                <label for="newReviewRatingInput" id="newReviewRatingLabel">Rating (Optional):</label>
+                <input type="number" id="newReviewRatingInput" name="newReviewRatingInput" min=1 max=5> <br>
+
+                <label for="newReviewCommentInput" id="newReviewCommentLabel">Comment:</label>
+                <input type="text" id="newReviewCommentInput" name="newReviewCommentInput"> <br>
+
+                <button type="submit">Create Review</button>
+            </form>
+        </div>
+        <div id="error" class="error" hidden>Error:</div>
+    </div>
+
+    <h1>Reviews</h1>
+    {{#if hasAlbumReviews}}
+    <div class="reviews">
+        {{#each albumReviews}}
+        <div class="review">
+            <!-- put the name on the top left, the title below the name and the rating on the right of the comment-->
+            <h2>{{name}}</h2>
+            <p>{{title}}</p>
+            <p>{{rating}}</p>
+            <p>{{comment}}</p>
+        </div>
+        {{/each}}
+    </div>
+    {{else}}
+    <p>None</p>
+    {{/if}}
+
+    {{#if admin}}
+    <div id="addSong">
+        <h2>Add Song</h2>
+        <div id="addSongDetails">
+            <form method="POST" action="/album/{{album._id}}/addSong" id="newSong">
+                <label for="newSongTitleInput" id="newSongTitleLabel">Title:</label>
+                <input type="text" id="newSongTitleInput" name="newSongTitleInput"> <br>
+
+                <label for="newSongArtistInput" id="newSongArtistLabel">Artist:</label>
+                <input type="text" id="newSongArtistInput" name="newSongArtistInput"> <br>
+
+                <label for="newSongLengthInput" id="newSongLengthLabel">Song Length(mm:ss):</label>
+                <input type="text" id="newSongLengthInput" name="newSongLengthInput"> <br>
+
+                <label for="newSongGenreInput" id="newSongGenreLabel">Genre:</label>
+                <input type="text" id="newSongGenreInput" name="newSongGenreInput"> <br>
+
+                <label for="newSongReleaseYearInput" id="newSongReleaseYearLabel">Release Year:</label>
+                <input type="number" id="newSongReleaseYearInput" name="newSongReleaseYearInput" min=1900 max=2020> <br>
+
+                <label for="newSongLyricsInput" id="newSongLyricsLabel">Lyrics:</label>
+                <input type="text" id="newSongLyricsInput" name="newSongLyricsInput"> <br>
+
+                <button type="submit">Create Song</button>
+            </form>
+        </div>
+        <div id="error" class="error" hidden>Error:</div>
+    </div>
+    {{/if}}
+</div>
