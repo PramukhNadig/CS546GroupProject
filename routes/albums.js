@@ -38,9 +38,10 @@ router
         songList[i] = await songs.getSongById(albumSongs[i]);
       }
       const admin = user ? await users.checkAdmin(user.username) : false;
+
       res.status(200).render("album", {
         album: album,
-        user: req?.query?.user,
+        user: req?.session?.user,
         albumReviews: albumReviews,
         hasAlbumReviews: albumReviews.length > 0 ? true : false,
         admin: admin,
@@ -52,11 +53,11 @@ router
       res.status(404).render("error", {
         error: "Album not found",
         title: "Not found",
-        user: req?.query?.user,
+        user: req?.session?.user,
       });
     }
   })
-  .put(async (req, res) => {
+  .post(async (req, res) => {
     try {
       if (!req.session?.user)
         return res.redirect(
@@ -92,6 +93,7 @@ router
       const user = req.session?.user;
       const albumReviews = await reviews.getAlbumReviewsByAlbumId(
         req.params.id
+        
       ); // should have new review
       const album = await albums.getAlbumById(req.params.id);
       album.id = albumId;
@@ -105,7 +107,7 @@ router
 
       res.status(200).render("album", {
         album: album,
-        user: req?.query?.user,
+        user: req?.session?.user,
         albumReviews: albumReviews,
         hasAlbumReviews: albumReviews.length > 0 ? true : false,
         admin: admin ? true : false,
@@ -133,7 +135,7 @@ router.route("/:id/addSong").post(async (req, res) => {
       return res.status(403).render("forbiddenAccess", {
         message: "You are not authorized to perform this action",
         title: "Unauthorized",
-        user: req?.query?.user,
+        user: req?.session?.user,
       });
     }
 
@@ -157,7 +159,7 @@ router.route("/:id/addSong").post(async (req, res) => {
 
     res.status(200).render("album", {
       album: album,
-      user: req?.query?.user,
+      user: req?.session?.user,
       albumReviews: albumReviews,
       hasAlbumReviews: albumReviews.length > 0 ? true : false,
       admin: admin ? true : false,
