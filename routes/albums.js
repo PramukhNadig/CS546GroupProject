@@ -93,7 +93,6 @@ router
       const albumReviews = await reviews.getAlbumReviewsByAlbumId(
         req.params.id
       ); // should have new review
-      console.log(albumReviews);
       const album = await albums.getAlbumById(req.params.id);
       album.id = albumId;
 
@@ -138,7 +137,6 @@ router.route("/:id/addSong").post(async (req, res) => {
       });
     }
 
-    console.log(req.body.newSongTitleInput);
     const newSong = await songs.createSong(
       album.id,
       req.body.newSongTitleInput.trim(),
@@ -149,7 +147,6 @@ router.route("/:id/addSong").post(async (req, res) => {
       req.body.newSongLyricsInput.trim()
     );
 
-    console.log(newSong);
     const newSongId = newSong._id.toString();
     const addedSong = await albums.addSongToAlbum(album.id, newSongId);
     const albumSongs = album.songs;
