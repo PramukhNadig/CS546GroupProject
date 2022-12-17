@@ -26,8 +26,9 @@ const handleError = async (error, res) => {
 router.route("/").get(async (req, res) => {
   try {
     const { query } = req.query;
-
-    if (!query) throw new UserError("You must provide a search query!");
+    if (!query) { 
+      return res.redirect("/top-music");
+    };
 
     const [_songs, _albums, _artists] = await Promise.all([
       songs.searchSongs(query),

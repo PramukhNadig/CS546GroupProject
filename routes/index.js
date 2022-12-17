@@ -3,6 +3,8 @@ const songs = require("./songs");
 const search = require("./search");
 const playlist = require("./playlist");
 const albums = require("./albums");
+const friends = require("./friends");
+const topMusic = require("./topMusic");
 
 const constructorMethod = (app) => {
   app.use("/auth", auth);
@@ -12,6 +14,8 @@ const constructorMethod = (app) => {
   app.use("/album", albums);
 
   app.use("/search", search);
+
+  app.use("/friends", friends);
 
   app.use("/playlists", playlist);
   app.get("/", (req, res) =>

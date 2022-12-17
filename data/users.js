@@ -171,51 +171,32 @@ const favoriteAlbum = async (username, albumId) => {
   if (!album) throw new UserError("There is no album with that ID");
   
   username = username?.toLowerCase();
-  try {
-    validateUsername(username);
-    const users = await users();
-    const user = users.findOne({
-      username: username
-    });
-    if (!user) throw new UserError("There is no user with that username");
-    const updatedUser = await users.updateOne({
-      username: username,
-    }, {
-      $push: {
-        favoriteAlbums: albumId,
-      },
-    });
-    if (!updatedUser) throw new UserError("Could not update user");
-    return {
-      updatedUser: true
-    };
-  } catch (e) {
-    throw new UserError("There is no user with that username");
-  }
-};
+  const userCollection = await users();
+
+  const user = await userCollection.findOne({
+    username
+  });
+
+  if (!user) throw new UserError("There is no user with that username");
 
 const addFriend = async (username, friendUsername) => {
   if (!username || typeof username !== "string")
     throw new UserError("Username must be provided");
   if (!friendUsername || typeof friendUsername !== "string")
     throw new UserError("Friend username must be provided");
-  
-  const friend = await users.getUserByUsername(friendUsername);
+
+  const friend = await getUserByUsername(friendUsername);
+  const id = friend._id.toString();
+  console.log(id);
   if (!friend) throw new UserError("There is no user with that username");
 
-  username = username?.toLowerCase();
-  try {
-    validateUsername(username);
-    const users = await users();
-    const user = users.findOne({
-      username: username
-    });
-    if (!user) throw new UserError("There is no user with that username");
-    const updatedUser = await users.updateOne({
+  const updatedUser = await userCollection.updateOne(
+    {
       username: username,
-    }, {
-      $push: {
-        friends: friendUsername,
+    },
+    {
+      $addToSet: {
+        friends: id,
       },
     });
     if (!updatedUser) throw new UserError("Could not update user");
@@ -228,37 +209,36 @@ const addFriend = async (username, friendUsername) => {
 };
 
 const removeFriend = async (username, friendUsername) => {
+
   if (!username || typeof username !== "string")
     throw new UserError("Username must be provided");
+  username = username?.toLowerCase();
+  const userCollection = await users();
+
+  const user = await userCollection.findOne({
+    username
+  });
+
+  if (!user) throw new UserError("There is no user with that username");
+
   if (!friendUsername || typeof friendUsername !== "string")
     throw new UserError("Friend username must be provided");
   
-  const friend = await users.getUserByUsername(friendUsername);
+  const friend = await getUserByUsername(friendUsername);
+  const id = friend._id.toString();
+  console.log(id);
   if (!friend) throw new UserError("There is no user with that username");
-  
-  username = username?.toLowerCase();
-  try {
-    validateUsername(username);
-    const users = await users();
-    const user = users.findOne({
-      username: username
-    });
-    if (!user) throw new UserError("There is no user with that username");
-    const updatedUser = await users.updateOne({
-      username: username,
-    }, {
-      $pull: {
-        friends: friendUsername,
-      },
-    });
 
-    if (!updatedUser) throw new UserError("Could not update user");
-    return {
-      updatedUser: true
-    };
-  } catch (e) {
-    throw new UserError("There is no user with that username");
-  }
+  const updatedUser = await userCollection.updateOne(
+    {
+      username: username,
+    },
+    {
+      $pull: {
+        friends: id,
+      },
+    }
+  );
 };
 
 
@@ -285,54 +265,15 @@ const getUserByID = async (id) => {
   return user;
 }
 
-const removeFavoriteSong = async (username, songId) => {
+const getUserFriends = async (username) => {
   if (!username || typeof username !== "string")
     throw new UserError("Username must be provided");
-  if (!songId || typeof songId !== "string")
-    throw new UserError("Song ID must be provided");
   
-  const song = await songs.getSongById(songId);
-  if (!song) throw new UserError("There is no song with that ID");
-
   username = username?.toLowerCase();
   try {
     validateUsername(username);
-    const users = await users();
-    const user = users.findOne({
-      username: username
-    });
-
-    if (!user) throw new UserError("There is no user with that username");
-    const updatedUser = await users.updateOne({
-      username: username,
-    }, {
-      $pull: {
-        favoriteSongs: songId,
-      },
-    });
-    if (!updatedUser) throw new UserError("Could not update user");
-    return {
-      updatedUser: true
-    };
-  } catch (e) {
-    throw new UserError("There is no user with that username");
-  }
-};
-
-const removeFavoriteAlbum = async (username, albumId) => {
-  if (!username || typeof username !== "string")
-    throw new UserError("Username must be provided");
-  if (!albumId || typeof albumId !== "string")
-    throw new UserError("Album ID must be provided");
-
-  const album = await albums.getAlbumById(albumId);
-  if (!album) throw new UserError("There is no album with that ID");
-
-  username = username?.toLowerCase();
-  try {
-    validateUsername(username);
-    const users = await users();
-    const user = users.findOne({
+  const userCollection = await users();
+    const user = await userCollection.findOne({
       username: username
     });
     if (!user) throw new UserError("There is no user with that username");

@@ -1,0 +1,22 @@
+<div id="addAlbum">
+    <h2>Add Album</h2>
+    <div id="addSongDetails">
+        <form method="POST" action="/album/create" id="newAlbum">
+            <label for="newAlbumTitleInput" id="newSongTitleLabel">Title:</label>
+            <input type="text" id="newAlbumTitleInput" name="newAlbumTitleInput"> <br>
+
+            <label for="newAlbumArtistInput" id="newSongArtistLabel">Artist:</label>
+            <input type="text" id="newAlbumArtistInput" name="newAlbumArtistInput"> <br>
+
+            <label for="newAlbumLengthInput" id="newSongLengthLabel">Album Length(mm:ss):</label>
+            <input type="text" id="newAlbumLengthInput" name="newAlbumLengthInput"> <br>
+
+            <label for="newAlbumGenreInput" id="newSongGenreLabel">Genre:</label>
+            <input type="text" id="newAlbumGenreInput" name="newAlbumGenreInput"> <br>
+
+            <label for="newAlbumReleaseYearInput" id="newSongReleaseYearLabel">Release Year:</label>
+            <input type="number" id="newAlbumReleaseYearInput" name="newAlbumReleaseYearInput" min=1900 max=2022> <br>
+
+            <button type="submit">Create Album</button>
+        </form>
+    </div>
