@@ -75,7 +75,7 @@ router.route("/").get(async (req, res) => {
             creatorUsername: friend.username,
             creatorID: friend.id,
             text: "wrote a review for " + review.songName,
-            url: "/song/" + review.songID.toString(),
+            link: "/song/" + review.songID.toString(),
             ...review,
           };
         });
