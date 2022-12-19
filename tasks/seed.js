@@ -2,7 +2,8 @@ const dbConnection = require("../config/mongoConnection");
 const data = require("../data/");
 const songs = data.songs;
 const albums = data.albums;
-const reviews = data.songReviews;
+const songReviews = data.songReviews;
+const albumReviews = data.albumReviews;
 const users = data.users;
 const playlists = data.playlists;
 
@@ -417,6 +418,58 @@ async function main() {
     theMan._id.toString()
   );
   await playlists.createPlaylist("Favorites", [], theMan._id.toString());
+
+  // Seeding 2 song reviews
+  const theMyth = await users.createUser("theMyth", "iAmTheMyth123!");
+  const theLegend = await users.createUser("theLegend", "iAmTheLegend123!");
+  const resp1 = await songReviews.createSongReview(
+    "Lame",
+    theMyth._id.toString(),
+    computer_World._id.toString(),
+    "The Myth",
+    2,
+    "Idk it's not that bad but kinda mid imo. Just basic."
+  );
+  const resp2 = await songReviews.createSongReview(
+    "Pretty good",
+    theLegend._id.toString(),
+    computer_World._id.toString(),
+    "The Legend",
+    4,
+    "I rather enjoyed this song. It was quite the ditty."
+  );
+  const review1Id = resp1._id.toString();
+  const review2Id = resp2._id.toString();
+  // add it to song
+  const songResponse1 = await songs.addReviewToSong(
+    computer_World._id.toString(),
+    review1Id
+  );
+  const songResponse2 = await songs.addReviewToSong(
+    computer_World._id.toString(),
+    review2Id
+  );
+
+  // Seeding an album review
+  const albumResp = await albumReviews.createAlbumReview(
+    bookOfRules._id,
+    "Great album!",
+    theLegend._id.toString(),
+    "The Legend",
+    5,
+    "Absolute fire."
+  );
+  const albumReviewId = albumResp._id.toString();
+  // add it to album
+  const addedReview = await albums.addReviewToAlbum(
+    bookOfRules._id,
+    theLegend._id.toString(),
+    albumReviewId
+  );
+
+  // Adding friends to theMan
+  const addFriend1 = await users.addFriend("theman", "themyth");
+  const addFriend2 = await users.addFriend("theman", "thelegend");
 
   console.log("Done seeding database");
 
