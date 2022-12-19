@@ -71,7 +71,7 @@ router.route("/").get(async (req, res) => {
     if (song.albumID) {
       song.albumURL = `/albums/${encodeURIComponent(song.albumID)}`;
     } else {
-      song.albumURL = `/search?query=${encodeURIComponent(song.album)}`;
+      song.albumURL = `/search?query=${encodeURIComponent(song.album)}&feelinglucky=album`;
     }
     return song;
   });
