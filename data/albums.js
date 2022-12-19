@@ -14,11 +14,20 @@ const { UserError } = require("../helpers/userHelper");
     reviews: subdocument
     genre: String ! maybe should be an array
     releaseYear: String
+    albumPhotoLink: String
     songs: array[ObjectId]
 */
 
 let exportedMethods = {
-  async createAlbum(title, artist, albumLength, releaseYear, genre, songs) {
+  async createAlbum(
+    title,
+    artist,
+    albumLength,
+    releaseYear,
+    genre,
+    songs,
+    albumPhotoLink
+  ) {
     if (!title || typeof title !== "string")
       throw new UserError("You must provide a title for your album");
     if (!artist || typeof artist !== "string")
@@ -29,6 +38,10 @@ let exportedMethods = {
       throw new UserError("You must provide a release year for your album");
     if (!genre || typeof genre !== "string")
       throw new UserError("You must provide a genre for your album");
+    if (!albumPhotoLink || typeof albumPhotoLink !== "string")
+      throw new UserError(
+        "You must provide an album photo link for your album"
+      );
     if (!songs || !Array.isArray(songs))
       throw new UserError("You must provide an array of songs for your album");
 
@@ -65,11 +78,13 @@ let exportedMethods = {
           : releaseYear,
       genre: genre,
       songs: songs,
+      albumPhotoLink: albumPhotoLink,
       reviews: reviews,
     };
 
     const insertInfo = await albumCollection.insertOne(newAlbum);
-    if (insertInfo.insertedCount === 0) throw new UserError("Could not add album");
+    if (insertInfo.insertedCount === 0)
+      throw new UserError("Could not add album");
 
     const newId = insertInfo.insertedId;
     const album = await this.getAlbumById(newId);
@@ -142,7 +157,8 @@ let exportedMethods = {
   async addReviewToAlbum(albumId, userId, reviewId) {
     if (!albumId) throw new UserError("You must provide an album id");
     if (!userId) throw new UserError("You must provide a user id");
-    if (!reviewId || typeof reviewId !== "string") throw new UserError("You must provide a review");
+    if (!reviewId || typeof reviewId !== "string")
+      throw new UserError("You must provide a review");
 
     const albumCollection = await albumsDatabase();
     const userCollection = await usersDatabase();
@@ -171,7 +187,8 @@ let exportedMethods = {
       }
     );
 
-    if (updatedInfo.modifiedCount === 0) throw new UserError("Could not add review to album");
+    if (updatedInfo.modifiedCount === 0)
+      throw new UserError("Could not add review to album");
 
     const updatedAlbum = await this.getAlbumById(albumId);
     return updatedAlbum;
@@ -230,7 +247,11 @@ let exportedMethods = {
 
     //Yes, I wrote this line. No, I don't care.
     const searchedAlbums = als.filter((album) => {
-      return album.title.toLowerCase().includes(searchTerm.toLowerCase()) || album.genre.toLowerCase().includes(searchTerm.toLowerCase()) || album.artist.toLowerCase().includes(searchTerm.toLowerCase());
+      return (
+        album.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        album.genre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        album.artist.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     });
 
     return searchedAlbums;
