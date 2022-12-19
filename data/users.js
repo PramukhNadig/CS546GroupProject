@@ -16,6 +16,14 @@ const USER_FAIL_MSG = "Either the username or password is invalid";
 
 const SALT_ROUNDS = 16;
 
+const getAllUsers = async () => {
+  const userCollection = await users();
+
+  const userList = await userCollection.find({}).toArray();
+
+  return userList;
+};
+
 const createUser = async (username, password) => {
   if (!username || typeof username !== "string")
     throw new UserError("Username must be provided");
@@ -218,7 +226,8 @@ const getUserByID = async (id) => {
     _id: new ObjectId(id),
   });
 
-  delete user.password;
+  // don't pass on
+  if (user?.password) delete user.password;
 
   return user;
 };
@@ -252,4 +261,5 @@ module.exports = {
   removeFriend,
   getUserFriends,
   getUserByID,
+  getAllUsers,
 };

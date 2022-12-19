@@ -23,6 +23,7 @@ app.set("views", "./views");
 
 // public public/css folder at /public
 app.use("/public", express.static(path.join(__dirname, "public")));
+app.use("/static", express.static(path.join(__dirname, "static")));
 
 // add bootstrap
 app.use(

@@ -1,17 +1,45 @@
 <div class="container py-4">
-    {{body}}
-    <h1>Friends</h1>
-    {{#if friends}}
-    <div class="friends">
-        {{#each friends}}
-        <div class="friend">
-            <h2><a href= "/profile/{{this.id}}">{{this.username}}</a></h2>
+
+    <h1>Friends Feed</h1>
+    <div class="row">
+        <div class="col">
+            {{#if feed}}
+            <div class="feed">
+                <ul>
+                    {{#each feed}}
+                    <div class="card p-3 my-3">
+                        <a href="{{link}}">{{creatorUsername}} {{text}}</a>
+                    </div>
+                    {{/each}}
+                </ul>
+            </div>
+            {{/if}}
         </div>
-        {{/each}}
+        <div class="col">
+            {{#if friends}}
+            <div class="friends">
+                <h3>My friends</h3>
+                <ul>
+                    {{#each friends}}
+                    <li><a href="/profile/{{this.id}}">{{this.username}}</a></li>
+                    {{/each}}
+                </ul>
+            </div>
+            {{else}}
+            <div class="error">
+                <p>No friends found. Why not meet some new people?</p>
+            </div>
+            {{/if}}
+            {{#if allUsers}}
+            <div class="otherUsers">
+                <h3>All users</h3>
+                <ul>
+                    {{#each allUsers}}
+                    <li><a href="/profile/{{this.id}}">{{this.username}}</a></li>
+                    {{/each}}
+                </ul>
+            </div>
+            {{/if}}
+        </div>
     </div>
-    {{else}}
-    <div class="error">
-        <p>No friends found</p>
-    </div>
-    {{/if}}
 </div>
