@@ -18,6 +18,7 @@
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                         <li><a href="/" class="nav-link px-2 text-secondary">Musicify</a></li>
+                        <li><a href="/friends" class="nav-link px-2 text-secondary">Friend Feed</a></li>
                         <li><a href="/playlists" class="nav-link px-2 text-secondary">Playlists</a></li>
                         <li><a href="/top-music" class="nav-link px-2 text-secondary">Top Music</a></li>
                     </ul>
@@ -29,9 +30,9 @@
 
                     <div class="text-end">
                         {{#if user}}
-                        <a type="button" href="/auth/logout" class="btn btn-warning">Log out</a>
+                        <a href="/auth/logout" class="btn btn-warning">Log out</a>
                         {{else}}
-                        <a type="button" href="/auth/login" class="btn btn-warning">Log in</a>
+                        <a href="/auth/login" class="btn btn-warning">Log in</a>
                         {{/if}}
 
                     </div>
@@ -39,7 +40,6 @@
             </div>
         </nav>
     </header>
-
 
     <main>
         {{{body}}}

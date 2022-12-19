@@ -7,6 +7,7 @@ songID: ObjectId
 name: String
 rating: Number
 comment: String
+lastModifiedAt: timestamp (long)
 */
 
 const mongoCollections = require("../config/mongoCollections");
@@ -48,6 +49,7 @@ async function createSongReview(title, userID, songID, name, rating, comment) {
     name: name,
     rating: rating,
     comment: comment,
+    lastModifiedAt: Date.now(),
   };
 
   const insertInfo = await songReviewsCollection.insertOne(newSongReview);
@@ -194,6 +196,24 @@ async function getSongReviewBySongId(songId) {
   return songReview;
 }
 
+async function getMostRecentReviewsByUserId(creatorID) {
+  // get the 10 most recent reviews with lastModifiedAt with creatorID
+  if (!creatorID)
+    throw new UserError("You must provide a creator id to search for");
+  console.log({ creatorID })
+  const songReviewsCollection = await songReviews();
+  const songReview = await songReviewsCollection
+    .find({
+      userID: new ObjectId(creatorID),
+    })
+    .sort({ lastModifiedAt: -1 })
+    .limit(10)
+    .toArray();
+  
+
+  return songReview;
+}
+
 module.exports = {
   createSongReview,
   getAllSongReviews,
@@ -203,4 +223,5 @@ module.exports = {
   updateSongReview,
   deleteSongReview,
   getSongReviewBySongId,
+  getMostRecentReviewsByUserId,
 };

@@ -29,25 +29,29 @@ router.route("/").get(async (req, res) => {
 });
 
 router.route("/:id/playlists").post(async (req, res) => {
-  if (!req.session?.user)
-    return res.redirect(
-      "/auth/login?next=" + encodeURIComponent(req.originalUrl)
+  try {
+    if (!req.session?.user)
+      return res.redirect(
+        "/auth/login?next=" + encodeURIComponent(req.originalUrl)
+      );
+
+    const body = req.body;
+    let batch = body?.playlist || [];
+
+    if (typeof batch == "string") batch = [batch];
+
+    const results = await Promise.all(
+      batch.map((playlist) =>
+        playlists.addSongToPlaylist(playlist, req.params.id)
+      )
     );
 
-  const body = req.body;
-  let batch = body?.playlist || [];
+    const { id } = req.params;
 
-  if (typeof batch == "string") batch = [batch];
-
-  const results = await Promise.all(
-    batch.map((playlist) =>
-      playlists.addSongToPlaylist(playlist, req.params.id)
-    )
-  );
-
-  const { id } = req.params;
-
-  res.redirect("/song/" + encodeURIComponent(id));
+    res.redirect("/song/" + encodeURIComponent(id));
+  } catch (e) {
+    return handleError(e, res);
+  }
 });
 
 router

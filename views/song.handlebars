@@ -5,7 +5,7 @@
                 <img src={{album.albumPhotoLink}} class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">{{song.title}} ({{song.releaseYear}})</h5>
-                    <p class="card-text">by {{song.artist}} on {{song.album}} <br />{{song.genre}}</p>
+                    <p class="card-text">by {{song.artist}} on {{song.album}} <br>{{song.genre}}</p>
                 </div>
             </div>
         </div>
@@ -33,8 +33,8 @@
                                 name="newReviewTitleInput">
                         </div>
                         <div class="mb-3">
-                            <textarea class="form-control" type="text" id="newReviewCommentInput"
-                                name="newReviewCommentInput" placeholder="Your review"></textarea>
+                            <textarea class="form-control" id="newReviewCommentInput" name="newReviewCommentInput"
+                                placeholder="Your review"></textarea>
                         </div>
                         {{#if user}}
                         <button class="btn btn-primary" type="submit">Create Review</button>
@@ -55,13 +55,11 @@
                 {{#each songReviews}}
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="review-{{name}}-{{rating}}">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true"
-                            aria-controls="review-{{name}}-{{rating}}">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" aria-expanded="true">
                             @{{name}}: {{title}} ({{rating}})
                         </button>
                     </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show"
-                        aria-labelledby="#review-{{name}}-{{rating}}" data-bs-parent="#reviews">
+                    <div class="accordion-collapse collapse show" data-bs-parent="#reviews">
                         <div class="accordion-body">
                             {{comment}}
                         </div>
@@ -83,8 +81,7 @@
                         </button>
                     </h2>
 
-                    <div id="collapseLyrics" class="accordion-collapse collapse" aria-labelledby="headingOne"
-                        data-bs-parent="#lyrics">
+                    <div id="collapseLyrics" class="accordion-collapse collapse" data-bs-parent="#lyrics">
                         <div class="accordion-body">
                             {{#if lyricsAreURL}}
                             <a href="{{song.lyrics}}">View lyrics on external website</a>
@@ -119,11 +116,13 @@
                     </div>
                     {{/each}}
 
+                    <a href="/playlists">Create or modify playlists</a>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button class="btn btn-primary" type="submit">Add to playlist</button>
                 </div>
             </div>
+        </div>
     </form>
 </div>

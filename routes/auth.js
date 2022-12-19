@@ -133,14 +133,18 @@ router
   });
 
 router.route("/logout").get(async (req, res) => {
-  // @ts-ignore
-  if (!req.session?.user)
+  try {
+    // @ts-ignore
+    if (!req.session?.user)
+      return renderLogin(req, res, "You have been logged out.");
+
+    // @ts-ignore
+    req.session.destroy();
+
     return renderLogin(req, res, "You have been logged out.");
-
-  // @ts-ignore
-  req.session.destroy();
-
-  return renderLogin(req, res, "You have been logged out.");
+  } catch (e) {
+    return handleError(e, res);
+  }
 });
 
 module.exports = router;
