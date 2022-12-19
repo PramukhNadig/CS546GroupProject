@@ -59,6 +59,7 @@ const createUser = async (username, password) => {
   const newId = insertInfo.insertedId;
 
   newUser._user = newId;
+  newUser._id = newId;
   return newUser;
 };
 

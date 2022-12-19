@@ -14,27 +14,39 @@ const handleError = async (error, res) => {
   }
   console.error("Unhandled exception occured");
   console.error(error);
-  return res
-    .status(500)
-    .render("forbiddenAccess", {
-      message: "Internal server error",
-      title: "Error",
-      user: req?.session?.user,
-    });
+  return res.status(500).render("forbiddenAccess", {
+    message: "Internal server error",
+    title: "Error",
+    user: req?.session?.user,
+  });
 };
 
 router.route("/").get(async (req, res) => {
   try {
-    const { query } = req.query;
-    if (!query) { 
+    const { query, feelinglucky = false } = req.query;
+    if (!query) {
       return res.redirect("/top-music");
-    };
+    }
 
     const [_songs, _albums, _artists] = await Promise.all([
       songs.searchSongs(query),
       albums.searchAlbums(query),
       songs.searchArtists(query),
     ]);
+
+    if (feelinglucky) {
+      if (feelinglucky == "true" && _songs.length > 0)
+        return res.redirect(`/songs/${_songs[0]._id}`);
+
+      if (feelinglucky == "song" && _songs.length > 0)
+        return res.redirect(`/songs/${_songs[0]._id}`);
+
+      if (feelinglucky == "album" && _albums.length > 0)
+        return res.redirect(`/album/${_albums[0]._id}`);
+
+      if (feelinglucky == "artist" && _artists.length > 0)
+        return res.redirect(`/artists/${_artists[0]._id}`);
+    }
 
     res.render("search", {
       songs: _songs,

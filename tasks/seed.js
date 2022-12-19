@@ -362,7 +362,8 @@ async function main() {
       aDayInTheLifeOfATree._id,
       tilIDie._id,
       surfs_Up._id,
-    ]
+    ],
+    "https://upload.wikimedia.org/wikipedia/en/c/ce/SurfsUpCover.jpg"
   );
 
   const bookOfRules = await albums.createAlbum(
@@ -382,7 +383,8 @@ async function main() {
       bagaBoo._id,
       wahGoHome._id,
       overAndOver._id,
-    ]
+    ],
+    "https://i.scdn.co/image/ab67616d0000b2739646f1fc55a3365e7dc06792"
   );
 
   const computerWorld = await albums.createAlbum(
@@ -398,7 +400,8 @@ async function main() {
       computerWorld2._id,
       homeComputer._id,
       itsMoreFunToCompute._id,
-    ]
+    ],
+    "https://upload.wikimedia.org/wikipedia/en/a/a6/Kraftwerk_-_Computer_World.png"
   );
 
   const theMan = await users.createUser("theMan", "iAmTheMan123!");
@@ -411,9 +414,9 @@ async function main() {
       aDayInTheLifeOfATree._id,
       tilIDie._id,
     ],
-    theMan._id
+    theMan._id.toString()
   );
-  await playlists.createPlaylist("Favorites", []);
+  await playlists.createPlaylist("Favorites", [], theMan._id.toString());
 
   console.log("Done seeding database");
 

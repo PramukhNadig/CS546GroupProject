@@ -50,8 +50,10 @@ router.route("/").get(async (req, res) => {
       );
       song.reviews = songReviewsWithUser;
       song.averageRating =
-        Math.floor((songReviewsWithUser.reduce((acc, cur) => acc + cur.rating, 0) /
-          songReviewsWithUser.length || -1) * 10) / 10;
+        Math.floor(
+          (songReviewsWithUser.reduce((acc, cur) => acc + cur.rating, 0) /
+            songReviewsWithUser.length || -1) * 10
+        ) / 10;
       return song;
     })
   );
@@ -60,10 +62,24 @@ router.route("/").get(async (req, res) => {
     .filter(({ averageRating }) => averageRating >= 0)
     .sort((a, b) => b.averageRating - a.averageRating);
 
+  // take only the top 10, or less
+  const charts = topSongs.slice(0, 10);
+
+  // If each song has an albumID, the url is "/albums/:id".
+  // Otherwise, it's /search?query=albumid
+  const formattedTopSongs = charts.map((song) => {
+    if (song.albumID) {
+      song.albumURL = `/albums/${encodeURIComponent(song.albumID)}`;
+    } else {
+      song.albumURL = `/search?query=${encodeURIComponent(song.album)}&feelinglucky=album`;
+    }
+    return song;
+  });
+
   //   res.json({ topSongs });
-  res.render("topSongs", {
-    title: "Top Songs",
-    topSongs,
+  res.render("topMusic", {
+    title: "Top Music",
+    topSongs: formattedTopSongs,
     user: req.session?.user,
   });
 });

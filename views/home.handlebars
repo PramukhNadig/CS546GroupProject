@@ -4,7 +4,7 @@
       {{#if user}}
       <h1 class="display-5 fw-bold">Welcome back, {{user.username}}!</h1>
       <p class="col-md-8 fs-4">Ready to jam out?</p>
-      <button onClick="window.location.href='/top-songs'" class="btn btn-primary btn-lg" type="button">Today's top
+      <button onClick="window.location.href='/top-music'" class="btn btn-primary btn-lg" type="button">Today's top
         music
         &rarr;</button>
       {{else}}
@@ -20,10 +20,10 @@
     {{#if user}}
     <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
       <div class="feature col">
-        <h3 class="fs-2">Top songs</h3>
-        <p>See today's top songs.</p>
-        <a href="/top-songs" class="icon-link d-inline-flex align-items-center">
-          Top songs &rarr;
+        <h3 class="fs-2">Top music</h3>
+        <p>See today's top music.</p>
+        <a href="/top-music" class="icon-link d-inline-flex align-items-center">
+          Top music &rarr;
           <svg class="bi" width="1em" height="1em">
             <use xlink:href="#chevron-right"></use>
           </svg>

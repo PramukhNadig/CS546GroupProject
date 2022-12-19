@@ -12,7 +12,7 @@ const renderLogin = (req, res, error) =>
     title: "Log in",
     target: "/auth/login",
     error,
-    user: req?.session?.user
+    user: req?.session?.user,
   });
 
 const renderRegister = (req, res, error) =>
@@ -33,9 +33,10 @@ const handleError = async (error, res) => {
   }
   console.error("Unhandled exception occured");
   console.error(error);
-  return res
-    .status(500)
-    .render("forbiddenAccess", { message: "Internal server error", title: "Error" });
+  return res.status(500).render("forbiddenAccess", {
+    message: "Internal server error",
+    title: "Error",
+  });
 };
 
 router.route("/").get(async (req, res) => {
@@ -58,10 +59,11 @@ router
   })
   .post(async (req, res) => {
     try {
-      const { usernameInput, passwordInput } = req.body;
-
+      let { usernameInput, passwordInput } = req.body;
       if (!usernameInput || !passwordInput)
         throw new UserError("Username and password must be provided");
+
+      usernameInput = usernameInput.toLowerCase();
 
       // run createUser
       const resp = await users.createUser(usernameInput, passwordInput);
@@ -69,6 +71,11 @@ router
       if (!resp) {
         throw new Error("Could not insert user or did not return userInserted");
       }
+
+      req.session.user = {
+        username: resp.username,
+        id: resp._id,
+      };
 
       return res.redirect("/");
     } catch (e) {
@@ -91,12 +98,14 @@ router
   .post(async (req, res) => {
     try {
       // get username and password from body
-      const { usernameInput, passwordInput } = req.body;
+      let { usernameInput, passwordInput } = req.body;
       // validate username and password
       // if not exist throw UserError
 
       if (!usernameInput || !passwordInput)
         throw new UserError("Username and password must be provided");
+
+      usernameInput = usernameInput.toLowerCase();
 
       const resp = await users.checkUser(usernameInput, passwordInput);
 
@@ -107,6 +116,7 @@ router
       const userId = (
         await users.getUserByUsername(usernameInput)
       )._id.toString();
+
       req.session.user = {
         username: username,
         id: userId,
