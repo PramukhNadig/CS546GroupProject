@@ -72,6 +72,11 @@ router
         throw new Error("Could not insert user or did not return userInserted");
       }
 
+      req.session.user = {
+        username: resp.username,
+        id: resp._id,
+      };
+
       return res.redirect("/");
     } catch (e) {
       if (e instanceof UserError) {
