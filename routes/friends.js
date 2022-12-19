@@ -59,6 +59,7 @@ router.route("/").get(async (req, res) => {
           friend.id.toString()
         );
 
+
         // for each song id get song name
         const songsWithNames = await Promise.all(
           reviews.map(async (review) => {
@@ -84,6 +85,11 @@ router.route("/").get(async (req, res) => {
 
     let feed = [];
     for (let x of recentReviews) feed = [...feed, ...x];
+
+    // sort feed by lastModifiedAt reverse
+    feed.sort((a, b) => {
+      return b.lastModifiedAt - a.lastModifiedAt;
+    });
 
     res.status(200).render("friends", {
       user: req.session?.user,
