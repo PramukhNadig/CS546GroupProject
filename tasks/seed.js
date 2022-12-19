@@ -406,6 +406,7 @@ async function main() {
   );
 
   const theMan = await users.createUser("theMan", "iAmTheMan123!");
+  const theAdmin = await users.createUser("admin", "iAmTheAdmin123!", true);
 
   const theMansPlaylist = await playlists.createPlaylist(
     "The Man's Playlist",
@@ -471,10 +472,9 @@ async function main() {
   const addFriend1 = await users.addFriend("theman", "themyth");
   const addFriend2 = await users.addFriend("theman", "thelegend");
 
-  console.log("Done seeding database");
-
   await dbConnection.closeConnection();
+
+  console.log("Done!")
 }
 
 main();
-("its pretty good");

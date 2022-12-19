@@ -65,7 +65,6 @@ async function createSongReview(title, userID, songID, name, rating, comment) {
   });
   if (user === null) throw new UserError("No user with that id");
   const userSongReviews = user.songReviews || [];
-  // console.log(userSongReviews)
   userSongReviews.push(newId);
   const updateInfo = await usersCollection.updateOne(
     { _id: new ObjectId(userID) },
@@ -200,7 +199,6 @@ async function getMostRecentReviewsByUserId(creatorID) {
   // get the 10 most recent reviews with lastModifiedAt with creatorID
   if (!creatorID)
     throw new UserError("You must provide a creator id to search for");
-  console.log({ creatorID })
   const songReviewsCollection = await songReviews();
   const songReview = await songReviewsCollection
     .find({

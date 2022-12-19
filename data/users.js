@@ -24,7 +24,7 @@ const getAllUsers = async () => {
   return userList;
 };
 
-const createUser = async (username, password) => {
+const createUser = async (username, password, isAdmin = false) => {
   if (!username || typeof username !== "string")
     throw new UserError("Username must be provided");
   if (!password || typeof password !== "string")
@@ -54,7 +54,7 @@ const createUser = async (username, password) => {
     songReviews: [],
     albumReviews: [],
     friends: [],
-    adminFlag: false,
+    adminFlag: isAdmin ? isAdmin : false,
   };
 
   // insert into db
