@@ -107,6 +107,7 @@ router
       const userId = (
         await users.getUserByUsername(usernameInput)
       )._id.toString();
+      
       req.session.user = {
         username: username,
         id: userId,
