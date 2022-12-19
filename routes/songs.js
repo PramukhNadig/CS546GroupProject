@@ -5,6 +5,7 @@ const songs = data.songs;
 const reviews = data.songReviews;
 const users = data.users;
 const playlists = data.playlists;
+const albums = data.albums;
 
 const { UserError } = require("../helpers/userHelper");
 
@@ -75,6 +76,21 @@ router
           )
       );
 
+      console.log(song._id);
+
+      // get album
+      const album = song._id
+        ? await albums.getAlbumBySongID(song._id.toString())
+        : null;
+
+      if (song.lyrics) {
+        // fix whitespace issues
+        song.lyrics = song.lyrics
+          .split("\n")
+          .map((a) => a.trim())
+          .join("\n");
+      }
+
       res.status(200).render("song", {
         song: song,
         user: req?.session?.user,
@@ -82,7 +98,8 @@ router
         hasSongReviews: songReviews.length > 0 ? true : false,
         playlists: relevantPlaylists,
         allUserPlaylists: otherPlaylists,
-        title: song?.title
+        title: song?.title,
+        album,
       });
     } catch (e) {
       return handleError(e, res);
@@ -117,17 +134,7 @@ router
       const song = await songs.addReviewToSong(songID, reviewId);
 
       // if it worked, redeliver the webpage
-      song.id = songID;
-      const user = req.session?.user;
-      const songReviews = await reviews.getSongReviewBySongId(req.params.id); // should have new review
-
-      res.status(200).render("song", {
-        song: song,
-        user: req?.session?.user,
-        songReviews: songReviews,
-        hasSongReviews: songReviews.length > 0 ? true : false,
-        title: song?.title,
-      });
+      res.redirect("/song/" + encodeURIComponent(songID));
     } catch (e) {
       return handleError(e, res);
     }

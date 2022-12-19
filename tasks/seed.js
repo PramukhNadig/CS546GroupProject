@@ -414,9 +414,9 @@ async function main() {
       aDayInTheLifeOfATree._id,
       tilIDie._id,
     ],
-    theMan._id
+    theMan._id.toString()
   );
-  await playlists.createPlaylist("Favorites", []);
+  await playlists.createPlaylist("Favorites", [], theMan._id.toString());
 
   console.log("Done seeding database");
 

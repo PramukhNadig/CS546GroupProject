@@ -4,6 +4,7 @@ const usersDatabase = require("../config/mongoCollections").users;
 const { ObjectId } = require("mongodb");
 const mongoCollections = require("../config/mongoCollections");
 const { UserError } = require("../helpers/userHelper");
+const Songs = require("./").songs;
 
 //SCHEMA FOR ALBUMS
 /* 
@@ -88,6 +89,21 @@ let exportedMethods = {
 
     const newId = insertInfo.insertedId;
     const album = await this.getAlbumById(newId);
+
+    return album;
+  },
+
+  async getAlbumBySongID(songID) {
+    if (!songID) throw new UserError("You must provide a song id");
+
+    const albumCollection = await albumsDatabase();
+    const parsedId = new ObjectId(songID);
+    // songs is an array, find the album that has the song id in the array
+    const album = await albumCollection.findOne({
+      songs: parsedId,
+    });
+    if (album === null) return null;
+
     return album;
   },
 
