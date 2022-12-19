@@ -62,8 +62,6 @@ router.route("/:username").get(async (req, res) => {
 
     const plst = await playlists.getPlaylistsByUserId(userData._id);
 
-    console.log(plst);
-
     res.render("profile", {
       title: "Profile",
       userid: userData._id,
