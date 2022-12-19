@@ -82,10 +82,15 @@
                             Lyrics
                         </button>
                     </h2>
+
                     <div id="collapseLyrics" class="accordion-collapse collapse" aria-labelledby="headingOne"
                         data-bs-parent="#lyrics">
                         <div class="accordion-body">
+                            {{#if lyricsAreURL}}
+                            <a href="{{song.lyrics}}">View lyrics on external website</a>
+                            {{else}}
                             <code><pre>{{song.lyrics}}</pre></code>
+                            {{/if}}
                         </div>
                     </div>
                 </div>

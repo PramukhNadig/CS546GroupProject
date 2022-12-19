@@ -83,12 +83,19 @@ router
         ? await albums.getAlbumBySongID(song._id.toString())
         : null;
 
+      let lyricsAreURL = false;
+
       if (song.lyrics) {
-        // fix whitespace issues
-        song.lyrics = song.lyrics
-          .split("\n")
-          .map((a) => a.trim())
-          .join("\n");
+        // is it a url?
+        if (song.lyrics.trim().startsWith("http")) {
+          lyricsAreURL = true;
+        } else {
+          // fix whitespace issues
+          song.lyrics = song.lyrics
+            .split("\n")
+            .map((a) => a.trim())
+            .join("\n");
+        }
       }
 
       res.status(200).render("song", {
@@ -99,6 +106,7 @@ router
         playlists: relevantPlaylists,
         allUserPlaylists: otherPlaylists,
         title: song?.title,
+        lyricsAreURL: lyricsAreURL,
         album,
       });
     } catch (e) {
