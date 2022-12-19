@@ -61,8 +61,8 @@ router.route("/").get(async (req, res) => {
     .sort((a, b) => b.averageRating - a.averageRating);
 
   //   res.json({ topSongs });
-  res.render("topSongs", {
-    title: "Top Songs",
+  res.render("topMusic", {
+    title: "Top Music",
     topSongs,
     user: req.session?.user,
   });
