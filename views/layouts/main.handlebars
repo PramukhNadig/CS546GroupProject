@@ -30,9 +30,9 @@
 
                     <div class="text-end">
                         {{#if user}}
-                        <a type="button" href="/auth/logout" class="btn btn-warning">Log out</a>
+                        <a href="/auth/logout" class="btn btn-warning">Log out</a>
                         {{else}}
-                        <a type="button" href="/auth/login" class="btn btn-warning">Log in</a>
+                        <a href="/auth/login" class="btn btn-warning">Log in</a>
                         {{/if}}
 
                     </div>
@@ -40,7 +40,6 @@
             </div>
         </nav>
     </header>
-
 
     <main>
         {{{body}}}

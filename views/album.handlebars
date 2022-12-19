@@ -1,18 +1,30 @@
 <div class="container py-4">
     {{{body}}}
-    <div class="song-details">
-        <h2>{{album.title}}</h2>
-        <p>Artist: {{album.artist}}</p>
-        <p>Genre(s): {{album.genre}}</p>
-        <p>Released: {{album.releaseYear}}</p>
-    <div class="album-song-details">
-        <h2>Songs</h2>
-        {{#each songs}}
-            <div class="song">
-                <h4><a href="../song/{{_id}}">{{title}}</a></h4>
+    <div class="song-details row">
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src={{album.albumPhotoLink}} class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{album.title}}</h5>
+                    <p class="card-text">Artist: {{album.artist}}</p>
+                    <p class="card-text">Genre(s): {{album.genre}}</p>
+                    <p class="card-text">Released: {{album.releaseYear}}</p>
+                </div>
             </div>
-        {{/each}}
+        </div>
+        <div class="col">
+            <div class="album-song-details">
+                <h2>Songs</h2>
+                {{#each songs}}
+                <div class="song">
+                    <h4><a href="../song/{{_id}}">{{title}}</a></h4>
+                </div>
+                {{/each}}
+            </div>
+        </div>
     </div>
+
+
 
     <div id="addReview">
         <h2>Add Review</h2>
@@ -74,7 +86,8 @@
                 <input type="text" id="newSongGenreInput" name="newSongGenreInput"> <br>
 
                 <label for="newSongReleaseYearInput" id="newSongReleaseYearLabel">Release Year:</label>
-                <input type="number" id="newSongReleaseYearInput" name="newSongReleaseYearInput" min=1900 max=2022> <br>
+                <input type="number" id="newSongReleaseYearInput" name="newSongReleaseYearInput" min=1900 max=2022>
+                <br>
 
                 <label for="newSongLyricsInput" id="newSongLyricsLabel">Lyrics:</label>
                 <input type="text" id="newSongLyricsInput" name="newSongLyricsInput"> <br>
