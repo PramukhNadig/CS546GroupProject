@@ -145,7 +145,6 @@ async function deletePlaylist(id) {
   if (user === null) throw new UserError("No user with that id");
   const currentPlaylists = user.playlists;
   const updatedPlaylists = currentPlaylists.filter((playlistId) => playlistId.toString() !== id);
-  // console.log(updatedPlaylists)
   const updatedUser = await usersCollection.updateOne(
     { _id: userId },
     { $set: { playlists: updatedPlaylists } }

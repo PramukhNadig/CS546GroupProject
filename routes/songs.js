@@ -80,8 +80,6 @@ router
           )
       );
 
-      console.log(song._id);
-
       // get album
       const album = song._id
         ? await albums.getAlbumBySongID(song._id.toString())

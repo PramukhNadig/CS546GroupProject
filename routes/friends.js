@@ -50,7 +50,6 @@ router.route("/").get(async (req, res) => {
       });
     }
 
-    console.log(friendsList);
 
     // get each friend's most recent reviews as feedItem
     const recentReviews = await Promise.all(
@@ -122,7 +121,6 @@ router.route("/add/:name").post(async (req, res) => {
     // add friend
     await users.addFriend(user.username, friend.username);
 
-    console.log("nowFriends");
     res.json({ nowFriends: true });
   } catch (e) {
     return handleError(e, res);

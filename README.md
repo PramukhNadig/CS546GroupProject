@@ -9,6 +9,12 @@
 5. Seed the DB with `npm run seed`
 6. Run the server with `npm start`
 
+## Credentials
+
+You can create a user, or use the user (after seeding): `theman` with the password `iAmTheMan123!`
+
+The admin user can be accessed with `admin` and the password `iAmTheAdmin123!` (after seeding).
+
 
 ## Environment variables
 
